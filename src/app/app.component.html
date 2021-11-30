@@ -1,0 +1,39 @@
+<header class="header p-1 w-100" fxLayout="row" fxLayoutAlign="space-between center">
+  <a
+    routerLink="/home"
+    class="header__logo pointer"
+    fxLayoutAlign="start center"
+    fxLayoutGap="0.3rem"
+    fxFlex="fit-content"
+  >
+    <mat-icon class="header__logo__icon">fitbit</mat-icon>
+    <span class="mat-h4 m-0">My Blog</span>
+  </a>
+
+  <nav fxLayoutAlign="end center" fxLayoutGap="0.5rem" role="navigation" class="header__nav">
+    <a routerLink="/home" routerLinkActive="active" color="primary" mat-button class="header__nav__btn">
+      <div fxLayoutAlign="start center">
+        <mat-icon class="mr-half">dashboard</mat-icon>
+        Home
+      </div>
+    </a>
+    <a routerLink="/articles/new" routerLinkActive="active" color="primary" mat-button class="header__nav__btn">
+      <div fxLayoutAlign="start center">
+        <mat-icon class="mr-half">post_add</mat-icon>
+        New Article
+      </div>
+    </a>
+  </nav>
+</header>
+
+<main class="p-1 main-container">
+  <router-outlet></router-outlet>
+</main>
+
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.7)"
+  size="large"
+  color="#c7c7c7"
+  type="ball-clip-rotate"
+  [fullScreen]="true"
+></ngx-spinner>

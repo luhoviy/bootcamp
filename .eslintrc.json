@@ -20,7 +20,7 @@
         "plugin:@angular-eslint/template/process-inline-templates",
         "plugin:@angular-eslint/recommended--extra",
         "prettier",
-        "plugin:ngrx/strict"
+        "plugin:ngrx/recommended"
       ],
       "rules": {
         "@angular-eslint/directive-selector": [
@@ -51,10 +51,7 @@
         ],
         "no-var": "error",
         "prefer-const": "warn"
-      },
-      "plugins": [
-        "ngrx"
-      ]
+      }
     },
     {
       "files": [

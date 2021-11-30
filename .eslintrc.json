@@ -19,8 +19,7 @@
         "plugin:@angular-eslint/recommended",
         "plugin:@angular-eslint/template/process-inline-templates",
         "plugin:@angular-eslint/recommended--extra",
-        "prettier",
-        "plugin:ngrx/recommended"
+        "prettier"
       ],
       "rules": {
         "@angular-eslint/directive-selector": [
@@ -41,6 +40,7 @@
         ],
         "@typescript-eslint/no-unused-vars": "error",
         "@angular-eslint/use-lifecycle-interface": "error",
+        "@angular-eslint/no-empty-lifecycle-method": "warn",
         "no-console": [
           "error",
           {

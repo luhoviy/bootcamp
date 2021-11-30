@@ -1,4 +1,8 @@
-<header class="header p-1 w-100" fxLayout="row" fxLayoutAlign="space-between center">
+<header
+  class="header p-1 w-100"
+  fxLayout="row"
+  fxLayoutAlign="space-between center"
+>
   <a
     routerLink="/home"
     class="header__logo pointer"
@@ -10,14 +14,31 @@
     <span class="mat-h4 m-0">My Blog</span>
   </a>
 
-  <nav fxLayoutAlign="end center" fxLayoutGap="0.5rem" role="navigation" class="header__nav">
-    <a routerLink="/home" routerLinkActive="active" color="primary" mat-button class="header__nav__btn">
+  <nav
+    fxLayoutAlign="end center"
+    fxLayoutGap="0.5rem"
+    role="navigation"
+    class="header__nav"
+  >
+    <a
+      routerLink="/home"
+      routerLinkActive="active"
+      color="primary"
+      mat-button
+      class="header__nav__btn"
+    >
       <div fxLayoutAlign="start center">
         <mat-icon class="mr-half">dashboard</mat-icon>
         Home
       </div>
     </a>
-    <a routerLink="/articles/new" routerLinkActive="active" color="primary" mat-button class="header__nav__btn">
+    <a
+      routerLink="/articles/new"
+      routerLinkActive="active"
+      color="primary"
+      mat-button
+      class="header__nav__btn"
+    >
       <div fxLayoutAlign="start center">
         <mat-icon class="mr-half">post_add</mat-icon>
         New Article

@@ -1,5 +1,6 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
+import { CreateArticleComponent } from "./create-article/create-article.component";
 
 const routes: Routes = [
   {
@@ -9,7 +10,7 @@ const routes: Routes = [
   },
   {
     path: "new",
-    loadChildren: () => import("./create-article/create-article.module").then((m) => m.CreateArticleModule),
+    component: CreateArticleComponent,
   },
   {
     path: "**",

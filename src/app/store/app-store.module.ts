@@ -7,6 +7,7 @@ import { environment } from "../../environments/environment";
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 import { ArticlesEffects } from "./articles/articles.effects";
 import { AppEffects } from "./app.effects";
+import { AuthStoreModule } from "../authentication/store/auth-store.module";
 
 @NgModule({
   declarations: [],
@@ -21,6 +22,7 @@ import { AppEffects } from "./app.effects";
     }),
     EffectsModule.forRoot([AppEffects, ArticlesEffects]),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
+    AuthStoreModule,
   ],
 })
 export class AppStoreModule {}

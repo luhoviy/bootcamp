@@ -1,1 +1,161 @@
-<p>home works!</p>
+<section class="h-100" fxLayout="column">
+  <div
+    class="section-header m-0"
+    fxLayoutAlign="space-between center"
+    fxLayoutGap="1rem"
+  >
+    <h1>Articles List</h1>
+
+    <button
+      [ngClass]="{ active: drawer.opened }"
+      class="section-header__aside-toggle-btn"
+      (click)="drawer.toggle()"
+      mat-icon-button
+      color="primary"
+    >
+      <mat-icon>menu_open</mat-icon>
+    </button>
+  </div>
+
+  <mat-drawer-container fxFlex="grow" autosize>
+    <mat-drawer
+      [opened]="isDesktop"
+      #drawer
+      [mode]="isDesktop ? 'side' : 'over'"
+      position="end"
+      [autoFocus]="false"
+    >
+      <aside
+        [ngClass]="{ 'side-panel__desktop': isDesktop }"
+        class="side-panel h-100 overflow-y p-1"
+      >
+        <h2>Popular tags:</h2>
+        <div class="divider mt-1"></div>
+      </aside>
+    </mat-drawer>
+
+    <ng-container *ngIf="articles.length; else noData">
+      <div
+        class="articles-list p-1 pr-half"
+        [ngClass]="{ 'pr-half': isDesktop && drawer.opened }"
+        fxLayout="column"
+        fxLayoutGap="1rem"
+        role="list"
+      >
+        <mat-card *ngFor="let article of articles" role="listitem">
+          <div class="articles-list__item">
+            <div
+              class="articles-list__item__header"
+              fxLayout="row"
+              fxLayoutAlign="space-between center"
+            >
+              <div fxLayoutAlign="start start" fxLayoutGap="1rem">
+                <div class="avatar">
+                  <ng-container
+                    *ngIf="article.author?.photoUrl; else noPhoto"
+                  >
+                    <img
+                      [src]="article.author.photoUrl"
+                      [attr.alt]="
+                        article.author.displayName + ' avatar'
+                      "
+                    />
+                  </ng-container>
+
+                  <ng-template #noPhoto>
+                    <mat-icon>person</mat-icon>
+                  </ng-template>
+                </div>
+
+                <div fxLayout="column">
+                  <span
+                    class="
+                      mat-h3
+                      m-0
+                      articles-list__item__header__author-name
+                    "
+                    ngClass.xs="mat-h4"
+                  >
+                    {{ article.author.displayName }}
+                  </span>
+
+                  <span
+                    class="
+                      mat-caption
+                      articles-list__item__header__creation-date
+                    "
+                    >{{ article.createdAt | humanizedTime }}</span
+                  >
+                </div>
+              </div>
+
+              <ng-template #btnContent>
+                <mat-icon ngClass.gt-xs="mr-half">favorite</mat-icon>
+                <span fxHide.xs>{{ article.likes.length }}</span>
+              </ng-template>
+
+              <ng-container
+                *ngIf="article.currentUserLiked; else noLikeBtn"
+              >
+                <button
+                  (click)="
+                    toggleLikeStatement(
+                      article,
+                      !article.currentUserLiked
+                    )
+                  "
+                  mat-raised-button
+                  color="primary"
+                  class="pr-half pl-half"
+                >
+                  <ng-template
+                    [ngTemplateOutlet]="btnContent"
+                  ></ng-template>
+                </button>
+              </ng-container>
+
+              <ng-template #noLikeBtn>
+                <button
+                  (click)="
+                    toggleLikeStatement(
+                      article,
+                      !article.currentUserLiked
+                    )
+                  "
+                  mat-stroked-button
+                  color="primary"
+                  class="pr-half pl-half"
+                >
+                  <ng-template
+                    [ngTemplateOutlet]="btnContent"
+                  ></ng-template>
+                </button>
+              </ng-template>
+            </div>
+
+            <div class="divider mt-1 mb-1"></div>
+
+            <h2 class="mat-display-1 m-0 articles-list__item__title">
+              {{ article.title }}
+            </h2>
+
+            <p class="mt-1 articles-list__item__description">
+              {{ article.description }}
+            </p>
+          </div>
+
+          <div class="mt-1" fxLayoutAlign="end center">
+            <button mat-stroked-button>Read More</button>
+          </div>
+        </mat-card>
+      </div>
+    </ng-container>
+
+    <ng-template #noData>
+      <div class="no-data-message">
+        <mat-icon>search_off</mat-icon>
+        <h2>No Articles Found</h2>
+      </div>
+    </ng-template>
+  </mat-drawer-container>
+</section>

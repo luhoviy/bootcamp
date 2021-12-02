@@ -4,6 +4,7 @@ interface UserModel {
   displayName?: string;
   email?: string;
   id?: number;
+  photoUrl?: string;
 }
 
 export class User implements UserModel {
@@ -12,6 +13,7 @@ export class User implements UserModel {
     public email: string,
     public lastName?: string,
     public id: number = null,
+    public photoUrl?: string,
     public displayName?: string
   ) {
     this.displayName = displayName || firstName + (!!lastName ? ` ${lastName}` : "");

@@ -1,41 +1,10 @@
-@import "src/styles/variables";
+:host {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 
-.header {
-  background-color: $primary-dark;
-  box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.64);
-  height: 70px;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 999;
-
-  &__logo {
-    color: $primary;
-    text-decoration: none;
-
-    &__icon {
-      font-size: 2rem;
-      height: 2rem;
-      width: 2rem;
-    }
-
-    span {
-      font-size: 1.5rem;
-    }
+  .main-container {
+    flex: 1;
+    overflow-y: auto;
   }
-
-  &__nav {
-    &__btn {
-      font-size: 1rem;
-      font-weight: bold;
-
-      &.active {
-        background-color: rgba(0, 0, 0, 0.2);
-      }
-    }
-  }
-}
-
-.main-container {
-  margin-top: 70px;
 }

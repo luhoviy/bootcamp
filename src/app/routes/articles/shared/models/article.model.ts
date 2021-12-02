@@ -1,29 +1,15 @@
 import { User } from "../../../../authentication/models/user.model";
+import { uniqueId } from "lodash";
 
-interface ArticleModel {
-  id?: number;
-  title?: string;
-  description?: string;
-  likes?: number;
-  createdAt?: number;
-  editedAt?: number;
-  authorId?: number;
+export class Article {
+  public authorId: number;
+  public createdAt: number = new Date().getTime();
+  public id: number = +uniqueId();
+  public likes: number[] = [];
 
   // for client side
-  author?: User;
-}
+  public author: User;
+  public currentUserLiked: boolean;
 
-export class Article implements ArticleModel {
-  constructor(
-    public title: string,
-    public description: string,
-    public authorId: number,
-    public createdAt: number = new Date().getTime(),
-    public id: number = null,
-    public likes: number = 0,
-    public editedAt: number = null,
-    public author: User = User.getMockedUser()
-  ) {
-    this.authorId = authorId || author.id;
-  }
+  constructor(public title: string, public description: string) {}
 }

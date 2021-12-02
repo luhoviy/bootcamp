@@ -1,5 +1,7 @@
-@import "src/styles/common";
-@import "src/styles/variables";
+@import "variables";
+@import "material";
+@import "common";
+@import "spacing";
 
 * {
   margin: 0;
@@ -12,9 +14,19 @@
   &:visited {
     outline: none;
   }
+
+  &::-webkit-scrollbar {
+    height: 5px;
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $primary;
+    border-radius: 5px;
+  }
 }
 
 html,
 body {
-  background-color: $primary-light;
+  background-color: $grey-light;
 }

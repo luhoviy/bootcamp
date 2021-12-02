@@ -5,9 +5,10 @@ import { AppComponent } from "./app.component";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { environment } from "../environments/environment";
 import { ServiceWorkerModule } from "@angular/service-worker";
-import { SharedModule } from "./shared/shared.module";
 import { AppStoreModule } from "./store/app-store.module";
 import { NgxSpinnerModule } from "ngx-spinner";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
+import { HeaderModule } from "./shared/components/header/header.module";
 
 @NgModule({
   declarations: [AppComponent],
@@ -20,8 +21,9 @@ import { NgxSpinnerModule } from "ngx-spinner";
       registrationStrategy: "registerImmediately",
     }),
     AppStoreModule,
-    SharedModule,
     NgxSpinnerModule,
+    MatSnackBarModule,
+    HeaderModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

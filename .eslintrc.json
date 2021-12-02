@@ -19,8 +19,7 @@
         "plugin:@angular-eslint/recommended",
         "plugin:@angular-eslint/template/process-inline-templates",
         "plugin:@angular-eslint/recommended--extra",
-        "prettier",
-        "plugin:ngrx/strict"
+        "prettier"
       ],
       "rules": {
         "@angular-eslint/directive-selector": [
@@ -41,6 +40,8 @@
         ],
         "@typescript-eslint/no-unused-vars": "error",
         "@angular-eslint/use-lifecycle-interface": "error",
+        "@angular-eslint/no-empty-lifecycle-method": "warn",
+        "@angular-eslint/no-output-on-prefix": "off",
         "no-console": [
           "error",
           {
@@ -51,10 +52,7 @@
         ],
         "no-var": "error",
         "prefer-const": "warn"
-      },
-      "plugins": [
-        "ngrx"
-      ]
+      }
     },
     {
       "files": [

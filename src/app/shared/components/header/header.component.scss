@@ -1,0 +1,48 @@
+@import "common";
+
+:host {
+  box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.64);
+  z-index: 1;
+  background-color: $primary;
+}
+
+.header {
+  &__logo {
+    color: $white;
+    text-decoration: none;
+
+    &__icon {
+      font-size: 2rem;
+      height: 2rem;
+      width: 2rem;
+    }
+
+    span {
+      font-size: 1.5rem;
+    }
+  }
+
+  &__nav {
+    &__btn {
+      font-size: 1rem;
+      font-weight: 500;
+      color: $white;
+
+      &.active {
+        background-color: rgba(0, 0, 0, 0.27);
+      }
+    }
+  }
+}
+
+.menu-icon {
+  color: $white;
+}
+
+::ng-deep .nav-menu .mat-menu-content {
+  padding: 0 !important;
+
+  .mat-menu-item.active {
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+}

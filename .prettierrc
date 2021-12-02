@@ -1,9 +1,16 @@
 {
-  "printWidth": 120,
-  "tabWidth": 2,
+  "printWidth": 90,
   "endOfLine": "auto",
   "singleQuote": false,
   "useTabs": false,
   "bracketSpacing": true,
-  "semi": true
+  "semi": true,
+  "overrides": [
+    {
+      "files": "*.html",
+      "options": {
+        "printWidth": 70
+      }
+    }
+  ]
 }

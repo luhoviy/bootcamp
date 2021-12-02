@@ -1,0 +1,141 @@
+@import "variables";
+
+:root {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p {
+    margin: 0;
+  }
+
+  .h-100 {
+    height: 100%;
+  }
+
+  .w-100 {
+    width: 100%;
+  }
+
+  .relative {
+    position: relative;
+  }
+
+  .absolute-mid {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .text-center {
+    text-align: center;
+  }
+
+  .overflow-y {
+    overflow-y: scroll;
+  }
+
+  .pointer {
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .no-pointer {
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .no-wrap {
+    white-space: nowrap;
+  }
+
+  .divider {
+    min-height: 1px;
+    height: 1px;
+    max-height: 1px;
+    width: 100%;
+    background-color: $grey-light;
+    border-radius: 1px;
+  }
+
+  .section-header {
+    background-color: $primary-dark;
+    padding: 1rem;
+    color: $white;
+    margin-bottom: 1rem;
+  }
+
+  .avatar {
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%;
+    border: 1px solid $primary;
+    width: 3rem;
+    min-width: 3rem;
+    height: 3rem;
+    min-height: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $primary;
+
+    img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      user-select: none;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .mat-icon {
+      height: 2rem;
+      width: 2rem;
+      line-height: 2rem;
+      font-size: 2rem;
+    }
+
+    &.small {
+      width: 2rem;
+      min-width: 2rem;
+      height: 2rem;
+      min-height: 2rem;
+
+      .mat-icon {
+        height: 1rem;
+        width: 1rem;
+        line-height: 1rem;
+        font-size: 1rem;
+      }
+    }
+  }
+
+  .no-data-message {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    * {
+      color: $grey;
+    }
+
+    .mat-icon {
+      font-size: 6rem;
+      width: 6rem;
+      height: 6rem;
+      line-height: 6rem;
+    }
+
+    h2 {
+      font-weight: 600;
+    }
+  }
+}

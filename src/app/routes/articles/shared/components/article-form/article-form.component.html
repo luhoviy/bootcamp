@@ -1,0 +1,71 @@
+<form
+  [formGroup]="form"
+  #formDirective="ngForm"
+  fxLayout="column"
+  class="w-100"
+  fxLayoutGap="1rem"
+  (ngSubmit)="submit()"
+>
+  <mat-form-field appearance="fill">
+    <mat-label>Title</mat-label>
+    <input
+      name="title"
+      type="text"
+      matInput
+      required
+      formControlName="title"
+      placeholder="Enter an article title"
+      maxlength="50"
+      #titleInput
+    />
+    <mat-hint align="end"
+      >{{ titleInput.value?.length || 0 }} / 50
+    </mat-hint>
+
+    <mat-error *ngIf="form.get('title').hasError('required')">
+      This field is required
+    </mat-error>
+
+    <mat-error *ngIf="form.get('title').hasError('minlength')">
+      Article title should contain at least 2 symbols
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Description</mat-label>
+    <textarea
+      matInput
+      [cdkTextareaAutosize]="true"
+      [cdkAutosizeMinRows]="8"
+      required
+      name="description"
+      formControlName="description"
+      placeholder="Describe your article"
+      maxlength="3000"
+      #descriptionInput
+    >
+    </textarea>
+    <mat-hint align="end"
+      >{{ descriptionInput.value?.length || 0 }} / 3000
+    </mat-hint>
+
+    <mat-error *ngIf="form.get('description').hasError('required')">
+      This field is required
+    </mat-error>
+
+    <mat-error *ngIf="form.get('description').hasError('minlength')">
+      Article description should contain at least 10 symbols
+    </mat-error>
+  </mat-form-field>
+
+  <div fxLayoutAlign="end center">
+    <button
+      [disabled]="form.invalid || form.untouched"
+      type="submit"
+      mat-raised-button
+      color="primary"
+    >
+      {{ isEditMode ? "Save" : "Publish" }}
+    </button>
+  </div>
+</form>

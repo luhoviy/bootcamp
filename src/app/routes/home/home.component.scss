@@ -1,0 +1,57 @@
+@import "variables";
+
+.section-header {
+  &__aside-toggle-btn {
+    color: $white;
+
+    .mat-icon {
+      transition: transform 0.3s ease-in-out;
+    }
+
+    &.active {
+      .mat-icon {
+        transform: rotateY(180deg);
+      }
+    }
+  }
+}
+
+.side-panel {
+  background-color: white;
+  max-width: 400px;
+  min-width: 300px;
+
+  &__desktop {
+    box-shadow: -3px 0px 7px 1px #a1a1a1;
+    margin-left: 0.5rem;
+  }
+}
+
+.articles-list {
+  &__item {
+    &__header {
+      &__author-name {
+        color: $primary-dark;
+        line-height: 1.5rem;
+        font-weight: 600;
+      }
+
+      &__creation-date {
+        color: $grey-dark;
+      }
+    }
+
+    &__description,
+    &__title {
+      display: -webkit-box;
+      -webkit-line-clamp: 5;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      word-break: break-all;
+    }
+
+    &__title {
+      -webkit-line-clamp: 2;
+    }
+  }
+}

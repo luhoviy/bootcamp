@@ -1,0 +1,67 @@
+<header
+  class="header p-1 w-100"
+  fxLayout="row"
+  fxLayoutAlign="space-between center"
+>
+  <a
+    routerLink="/home"
+    class="header__logo pointer"
+    fxLayoutAlign="start center"
+    fxLayoutGap="0.3rem"
+    fxFlex="fit-content"
+  >
+    <mat-icon class="header__logo__icon">fitbit</mat-icon>
+    <span class="mat-h4 m-0">My Blog</span>
+  </a>
+
+  <nav
+    fxHide.xs
+    fxLayoutAlign="end center"
+    fxLayoutGap="0.5rem"
+    role="navigation"
+    class="header__nav"
+  >
+    <a
+      *ngFor="let route of routes"
+      [routerLink]="route.path"
+      routerLinkActive="active"
+      mat-button
+      color="primary"
+      class="header__nav__btn"
+    >
+      <div fxLayoutAlign="start center">
+        <ng-container
+          *ngTemplateOutlet="routeBtn; context: { $implicit: route }"
+        ></ng-container>
+      </div>
+    </a>
+  </nav>
+
+  <button
+    fxHide.gt-xs
+    [matMenuTriggerFor]="profileMenu"
+    mat-icon-button
+  >
+    <mat-icon class="menu-icon">menu</mat-icon>
+  </button>
+
+  <mat-menu #profileMenu="matMenu" class="nav-menu">
+    <a
+      *ngFor="let route of routes"
+      [routerLink]="route.path"
+      routerLinkActive="active"
+      mat-menu-item
+    >
+      <ng-container
+        *ngTemplateOutlet="routeBtn; context: { $implicit: route }"
+      ></ng-container>
+    </a>
+  </mat-menu>
+
+  <ng-template #routeBtn let-route>
+    <ng-container *ngIf="!!route.icon">
+      <mat-icon class="mr-half">{{ route.icon }}</mat-icon>
+    </ng-container>
+    {{ route.name }}
+  </ng-template>
+</header>

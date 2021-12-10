@@ -4,12 +4,12 @@
   "singleQuote": false,
   "useTabs": false,
   "bracketSpacing": true,
-  "semi": true,
+  "trailingComma": "none",
   "overrides": [
     {
       "files": "*.html",
       "options": {
-        "printWidth": 70
+        "printWidth": 80
       }
     }
   ]

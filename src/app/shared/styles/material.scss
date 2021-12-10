@@ -2,7 +2,7 @@
 @import "variables";
 
 $my-custom-typography: mat.define-typography-config(
-  $font-family: "Poppins, sans-serif",
+  $font-family: "Poppins, sans-serif"
 );
 @include mat.core($my-custom-typography);
 
@@ -23,10 +23,6 @@ $my-custom-typography: mat.define-typography-config(
 
   &.error-snackbar {
     background: $error-dark;
-  }
-
-  &.notification-snackbar {
-    background: $warning;
   }
 }
 

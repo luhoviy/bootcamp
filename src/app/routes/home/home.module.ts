@@ -4,7 +4,6 @@ import { HomeComponent } from "./home.component";
 import { RouterModule } from "@angular/router";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { SharedModule } from "../../shared/shared.module";
-import { MatListModule } from "@angular/material/list";
 
 @NgModule({
   declarations: [HomeComponent],
@@ -17,8 +16,7 @@ import { MatListModule } from "@angular/material/list";
       },
     ]),
     MatSidenavModule,
-    SharedModule,
-    MatListModule,
+    SharedModule
   ],
 })
 export class HomeModule {}

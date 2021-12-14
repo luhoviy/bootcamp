@@ -37,7 +37,8 @@
             ],
             "scripts": [],
             "allowedCommonJsDependencies": [
-              "lodash"
+              "lodash",
+              "faker"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
@@ -55,8 +56,8 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
-                  "maximumError": "4kb"
+                  "maximumWarning": "4kb",
+                  "maximumError": "10kb"
                 }
               ],
               "fileReplacements": [

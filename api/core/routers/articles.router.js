@@ -1,6 +1,6 @@
 import express from "express";
 import controller from "../controllers/articles.controller.js";
 
-export const articlesRouter = express.Router();
+export const ArticlesRouter = express.Router();
 
-articlesRouter.get("/", controller.getAll);
+ArticlesRouter.get("/", controller.getAll);

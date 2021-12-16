@@ -1,9 +1,9 @@
-import lodash from "lodash";
-import faker from "faker";
+import * as faker from "faker";
+import { times } from "lodash";
 
 class ArticlesService {
   getAll() {
-    return lodash.times(faker.datatype.number(20), () => ({
+    return times(faker.datatype.number(20), () => ({
       title: faker.lorem.words(faker.datatype.number(10)),
       description: faker.lorem.words(faker.datatype.number(50)),
       author: {
@@ -14,7 +14,7 @@ class ArticlesService {
         displayName: "John Doe"
       },
       authorId: 666,
-      likes: lodash.times(faker.datatype.number(50), () => faker.datatype.number(10000)),
+      likes: times(faker.datatype.number(50), () => faker.datatype.number(10000)),
       createdAt: faker.date.past(Math.round(1)).getTime()
     }));
   }

@@ -15,6 +15,7 @@
     "refactor": "pretty-quick --staged",
     "lint": "ng lint",
     "lint:fix": "ng lint --fix",
+    "lint:be": "npm run lint --prefix api",
     "app:install": "npm install && cd api && npm install"
   },
   "private": true,

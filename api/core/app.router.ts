@@ -1,5 +1,5 @@
 import express from "express";
-import { ArticlesRouter } from "./routers/articles.router.js";
+import { ArticlesRouter } from "./routers/articles.router";
 
 export const AppRouter = express.Router();
 

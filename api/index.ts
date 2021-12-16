@@ -1,18 +1,18 @@
+import { ErrorHandler } from "./core/error-handler";
+import { AppRouter } from "./core/app.router";
 import express from "express";
 import path from "path";
-import { ErrorHandler } from "./core/error-handler.js";
-import { AppRouter } from "./core/app.router.js";
 
 const app = express();
 const distPath = path.resolve("..", "dist");
-const PORT = process.PORT || 3000;
+const PORT = 3000;
 
 app.use(express.json());
 app.use(express.static(distPath));
 app.use("/api", AppRouter);
 app.use(ErrorHandler);
 
-app.get("*", (req, res) => {
+app.get("*", (req: express.Request, res: express.Response) => {
   res.sendFile(path.resolve(distPath, "index.html"));
 });
 

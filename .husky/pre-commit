@@ -3,4 +3,5 @@
 
 npm run refactor
 npm run lint
+npm run lint:be
 #npm run test:ci

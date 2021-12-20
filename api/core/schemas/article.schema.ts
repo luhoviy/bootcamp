@@ -5,7 +5,7 @@ const schema = new Schema<ArticleDTO>({
   title: { type: String, required: true },
   description: { type: String, required: true },
   createdAt: Number,
-  likes: [Number],
+  likes: [String],
   author: Object
 });
 

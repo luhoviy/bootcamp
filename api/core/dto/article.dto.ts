@@ -5,6 +5,6 @@ export interface ArticleDTO {
   title: string;
   description: string;
   createdAt: number;
-  likes: number[];
+  likes: string[];
   author: UserDTO;
 }

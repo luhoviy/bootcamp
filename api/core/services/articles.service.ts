@@ -30,6 +30,30 @@ class ArticlesService {
   async deleteOne(id: string): Promise<ArticleDTO> {
     return Articles.findByIdAndDelete(id);
   }
+
+  async toggleLikeStatement(params: { articleID: string; userID: string }): Promise<ArticleDTO> {
+    if (isEmpty(params) || isEmpty(params.articleID) || isEmpty(params.userID)) {
+      throw new InternalError(
+        "Invalid request. Required params articleID or userID are missing.",
+        StatusCode.BAD_REQUEST
+      );
+    }
+
+    const article = await Articles.findById(params.articleID);
+    const alreadyLiked = article.likes.includes(params.userID);
+    article.likes = alreadyLiked
+      ? article.likes.filter((id) => id !== params.userID)
+      : [...article.likes, params.userID];
+    await Articles.updateOne(
+      { _id: params.articleID },
+      {
+        $set: {
+          likes: article.likes
+        }
+      }
+    );
+    return article;
+  }
 }
 
 export default new ArticlesService();

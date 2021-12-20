@@ -6,6 +6,10 @@ import { FlexLayoutModule } from "@angular/flex-layout";
 import { MatCardModule } from "@angular/material/card";
 import { ClearObservable } from "./components/clear-observable";
 import { HumanizedTimePipe } from "./pipes/humanized-time.pipe";
+import { NgxSpinnerModule } from "ngx-spinner";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
+import { HttpClientModule } from "@angular/common/http";
+import { LoadingBarRouterModule } from "@ngx-loading-bar/router";
 
 @NgModule({
   declarations: [ClearObservable, HumanizedTimePipe],
@@ -15,13 +19,21 @@ import { HumanizedTimePipe } from "./pipes/humanized-time.pipe";
     MatIconModule,
     MatButtonModule,
     MatCardModule,
+    NgxSpinnerModule,
+    MatSnackBarModule,
+    HttpClientModule,
+    LoadingBarRouterModule
   ],
   exports: [
     FlexLayoutModule,
     MatIconModule,
     MatButtonModule,
     MatCardModule,
+    NgxSpinnerModule,
+    MatSnackBarModule,
+    HttpClientModule,
     HumanizedTimePipe,
-  ],
+    LoadingBarRouterModule
+  ]
 })
 export class SharedModule {}

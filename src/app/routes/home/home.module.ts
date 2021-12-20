@@ -4,6 +4,7 @@ import { HomeComponent } from "./home.component";
 import { RouterModule } from "@angular/router";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { SharedModule } from "../../shared/shared.module";
+import { HomeResolver } from "./resolvers/home.resolver";
 
 @NgModule({
   declarations: [HomeComponent],
@@ -13,10 +14,14 @@ import { SharedModule } from "../../shared/shared.module";
       {
         path: "",
         component: HomeComponent,
-      },
+        resolve: {
+          home: HomeResolver
+        }
+      }
     ]),
     MatSidenavModule,
     SharedModule
   ],
+  providers: [HomeResolver]
 })
 export class HomeModule {}

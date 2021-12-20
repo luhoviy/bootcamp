@@ -1,6 +1,6 @@
 import { ArticleDTO } from "../dto/article.dto";
 import { Articles } from "../schemas/article.schema";
-import { isEmpty } from "lodash";
+import { isEmpty, uniq } from "lodash";
 import { InternalError } from "../common/error-handler";
 import { StatusCode } from "../common/enums";
 
@@ -48,7 +48,7 @@ class ArticlesService {
       { _id: params.articleID },
       {
         $set: {
-          likes: article.likes
+          likes: uniq(article.likes)
         }
       }
     );

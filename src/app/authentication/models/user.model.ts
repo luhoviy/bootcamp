@@ -3,7 +3,7 @@ interface UserModel {
   lastName?: string;
   displayName?: string;
   email?: string;
-  id?: number;
+  _id?: string;
   photoUrl?: string;
 }
 
@@ -12,7 +12,7 @@ export class User implements UserModel {
     public firstName: string,
     public email: string,
     public lastName?: string,
-    public id: number = null,
+    public _id: string = null,
     public photoUrl?: string,
     public displayName?: string
   ) {
@@ -20,6 +20,6 @@ export class User implements UserModel {
   }
 
   public static getMockedUser() {
-    return new User("John", "john.doe@mail.com", "Doe", 666);
+    return new User("John", "john.doe@mail.com", "Doe", "666");
   }
 }

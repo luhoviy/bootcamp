@@ -1,14 +1,16 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { Store } from "@ngrx/store";
-import { catchError, finalize, map, of, switchMap } from "rxjs";
+import { catchError, filter, finalize, map, of, switchMap } from "rxjs";
 import { tap } from "rxjs/operators";
 import { updateLoadingState } from "../app.actions";
 import { ToasterService } from "../../shared/services/toaster.service";
 import * as ArticleActions from "./articles.actions";
-import { Toast, ToastType } from "../../shared/services/toaster.model";
+import { Toast } from "../../shared/services/toaster.model";
 import { ArticlesService } from "../../routes/articles/shared/services/articles.service";
 import { HttpErrorResponse } from "@angular/common/http";
+import { ConfirmationDialogService } from "../../shared/confirmation-dialog/confirmation-dialog.service";
+import { ConfirmDialogData } from "../../shared/confirmation-dialog/confirmation-dialog.model";
 
 @Injectable()
 export class ArticlesEffects {
@@ -16,7 +18,8 @@ export class ArticlesEffects {
     private actions$: Actions,
     private store: Store,
     private toaster: ToasterService,
-    private articleService: ArticlesService
+    private articleService: ArticlesService,
+    private confirmDialog: ConfirmationDialogService
   ) {}
 
   createArticle$ = createEffect(() =>
@@ -30,14 +33,37 @@ export class ArticlesEffects {
             return ArticleActions.createArticleSuccess({ article: createdArticle });
           }),
           catchError((error: HttpErrorResponse) => {
-            const toast = new Toast({
-              text: error.error.message,
-              type: ToastType.ERROR
-            });
-            this.toaster.present(toast);
+            this.toaster.present(Toast.buildHttpErrorToast(error));
             return of(ArticleActions.createArticleFailure({ error }));
           }),
           finalize(() => this.store.dispatch(updateLoadingState({ isLoading: false })))
+        );
+      })
+    )
+  );
+
+  deleteArticle$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ArticleActions.deleteArticle),
+      switchMap(({ id }) => {
+        const dialogData = new ConfirmDialogData();
+        dialogData.title = "Are you sure you want to delete this article?";
+        dialogData.confirmButtonColor = "warn";
+        dialogData.cancelButtonColor = "primary";
+
+        return this.confirmDialog.open(dialogData).pipe(
+          filter((confirmed) => confirmed),
+          tap(() => this.store.dispatch(updateLoadingState({ isLoading: true }))),
+          switchMap(() => {
+            return this.articleService.deleteOne(id).pipe(
+              map((article) => ArticleActions.deleteArticleSuccess({ article })),
+              catchError((error: HttpErrorResponse) => {
+                this.toaster.present(Toast.buildHttpErrorToast(error));
+                return of(ArticleActions.deleteArticleFailure({ error }));
+              }),
+              finalize(() => this.store.dispatch(updateLoadingState({ isLoading: false })))
+            );
+          })
         );
       })
     )

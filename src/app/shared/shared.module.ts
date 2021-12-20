@@ -10,9 +10,11 @@ import { NgxSpinnerModule } from "ngx-spinner";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { HttpClientModule } from "@angular/common/http";
 import { LoadingBarRouterModule } from "@ngx-loading-bar/router";
+import { MatDialogModule } from "@angular/material/dialog";
+import { ConfirmationDialogComponent } from "./confirmation-dialog/confirmation-dialog.component";
 
 @NgModule({
-  declarations: [ClearObservable, HumanizedTimePipe],
+  declarations: [ClearObservable, HumanizedTimePipe, ConfirmationDialogComponent],
   imports: [
     CommonModule,
     FlexLayoutModule,
@@ -22,7 +24,8 @@ import { LoadingBarRouterModule } from "@ngx-loading-bar/router";
     NgxSpinnerModule,
     MatSnackBarModule,
     HttpClientModule,
-    LoadingBarRouterModule
+    LoadingBarRouterModule,
+    MatDialogModule
   ],
   exports: [
     FlexLayoutModule,
@@ -33,7 +36,9 @@ import { LoadingBarRouterModule } from "@ngx-loading-bar/router";
     MatSnackBarModule,
     HttpClientModule,
     HumanizedTimePipe,
-    LoadingBarRouterModule
+    LoadingBarRouterModule,
+    MatDialogModule,
+    ConfirmationDialogComponent
   ]
 })
 export class SharedModule {}

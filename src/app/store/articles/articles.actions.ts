@@ -19,4 +19,18 @@ export const CREATE_ARTICLE_FAILURE = "CREATE_ARTICLE_FAILURE";
 
 export const createArticle = createAction(CREATE_ARTICLE, props<{ article: Article }>());
 export const createArticleSuccess = createAction(CREATE_ARTICLE_SUCCESS, props<{ article: Article }>());
-export const createArticleFailure = createAction(CREATE_ARTICLE_FAILURE, props<{ error: HttpErrorResponse }>());
+export const createArticleFailure = createAction(
+  CREATE_ARTICLE_FAILURE,
+  props<{ error: HttpErrorResponse }>()
+);
+
+export const DELETE_ARTICLE = "DELETE_ARTICLE";
+export const DELETE_ARTICLE_SUCCESS = "DELETE_ARTICLE_SUCCESS";
+export const DELETE_ARTICLE_FAILURE = "DELETE_ARTICLE_FAILURE";
+
+export const deleteArticle = createAction(DELETE_ARTICLE, props<{ id: string }>());
+export const deleteArticleSuccess = createAction(DELETE_ARTICLE_SUCCESS, props<{ article: Article }>());
+export const deleteArticleFailure = createAction(
+  DELETE_ARTICLE_FAILURE,
+  props<{ error: HttpErrorResponse }>()
+);

@@ -3,7 +3,7 @@ import { User } from "../../../../authentication/models/user.model";
 export class Article {
   public createdAt: number;
   public _id: string;
-  public likes: number[] = [];
+  public likes: string[] = [];
 
   // for client side
   public author: User;

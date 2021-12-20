@@ -18,4 +18,8 @@ export class ArticlesService {
   create(article: Article): Observable<Article> {
     return this.http.post<Article>(this.API_URL, article);
   }
+
+  deleteOne(id: string): Observable<Article> {
+    return this.http.delete<Article>(`${this.API_URL}/${id}`);
+  }
 }

@@ -1,9 +1,5 @@
 <section class="h-100" fxLayout="column">
-  <div
-    class="section-header m-0"
-    fxLayoutAlign="space-between center"
-    fxLayoutGap="1rem"
-  >
+  <div class="section-header m-0" fxLayoutAlign="space-between center" fxLayoutGap="1rem">
     <h1>Articles List</h1>
 
     <button
@@ -51,14 +47,10 @@
             >
               <div fxLayoutAlign="start start" fxLayoutGap="1rem">
                 <div class="avatar">
-                  <ng-container
-                    *ngIf="article.author?.photoUrl; else noPhoto"
-                  >
+                  <ng-container *ngIf="article.author?.photoUrl; else noPhoto">
                     <img
                       [src]="article.author.photoUrl"
-                      [attr.alt]="
-                        article.author.displayName + ' avatar'
-                      "
+                      [attr.alt]="article.author.displayName + ' avatar'"
                     />
                   </ng-container>
 
@@ -69,23 +61,15 @@
 
                 <div fxLayout="column">
                   <span
-                    class="
-                      mat-h3
-                      m-0
-                      articles-list__item__header__author-name
-                    "
+                    class="mat-h3 m-0 articles-list__item__header__author-name"
                     ngClass.xs="mat-h4"
                   >
                     {{ article.author.displayName }}
                   </span>
 
-                  <span
-                    class="
-                      mat-caption
-                      articles-list__item__header__creation-date
-                    "
-                    >{{ article.createdAt | humanizedTime }}</span
-                  >
+                  <span class="mat-caption articles-list__item__header__creation-date">{{
+                    article.createdAt | humanizedTime
+                  }}</span>
                 </div>
               </div>
 
@@ -94,41 +78,25 @@
                 <span fxHide.xs>{{ article.likes.length }}</span>
               </ng-template>
 
-              <ng-container
-                *ngIf="article.currentUserLiked; else noLikeBtn"
-              >
+              <ng-container *ngIf="article.currentUserLiked; else noLikeBtn">
                 <button
-                  (click)="
-                    toggleLikeStatement(
-                      article,
-                      !article.currentUserLiked
-                    )
-                  "
+                  (click)="toggleLikeStatement(article, !article.currentUserLiked)"
                   mat-raised-button
                   color="primary"
                   class="pr-half pl-half"
                 >
-                  <ng-template
-                    [ngTemplateOutlet]="btnContent"
-                  ></ng-template>
+                  <ng-template [ngTemplateOutlet]="btnContent"></ng-template>
                 </button>
               </ng-container>
 
               <ng-template #noLikeBtn>
                 <button
-                  (click)="
-                    toggleLikeStatement(
-                      article,
-                      !article.currentUserLiked
-                    )
-                  "
+                  (click)="toggleLikeStatement(article, !article.currentUserLiked)"
                   mat-stroked-button
                   color="primary"
                   class="pr-half pl-half"
                 >
-                  <ng-template
-                    [ngTemplateOutlet]="btnContent"
-                  ></ng-template>
+                  <ng-template [ngTemplateOutlet]="btnContent"></ng-template>
                 </button>
               </ng-template>
             </div>
@@ -144,8 +112,19 @@
             </p>
           </div>
 
-          <div class="mt-1" fxLayoutAlign="end center">
+          <div class="divider mt-1"></div>
+
+          <div class="mt-1" fxLayoutAlign="space-between center">
             <button mat-stroked-button>Read More</button>
+
+            <div
+              *ngIf="article.author._id === currentUser._id"
+              fxLayoutAlign="end center"
+            >
+              <button (click)="deleteArticle(article)" mat-mini-fab color="warn">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
           </div>
         </mat-card>
       </div>

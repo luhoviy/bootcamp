@@ -3,6 +3,7 @@ import {
   MatSnackBarHorizontalPosition,
   MatSnackBarVerticalPosition
 } from "@angular/material/snack-bar";
+import { HttpErrorResponse } from "@angular/common/http";
 
 export enum ToastType {
   SUCCESS = "SUCCESS",
@@ -36,6 +37,13 @@ export class Toast implements ToastConfig {
     this.buttonText = config.buttonText || "Dismiss";
     this.horizontalPosition = config.horizontalPosition || "right";
     this.verticalPosition = config.verticalPosition || "bottom";
+  }
+
+  static buildHttpErrorToast(error: HttpErrorResponse): Toast {
+    return new Toast({
+      text: error.error.message,
+      type: ToastType.ERROR
+    });
   }
 
   public buildConfig(): MatSnackBarConfig {

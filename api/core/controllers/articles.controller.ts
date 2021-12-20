@@ -27,6 +27,18 @@ class ArticlesController {
       next(error);
     }
   }
+
+  async toggleLikeStatement(
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ): Promise<void> {
+    try {
+      res.json(await articlesService.toggleLikeStatement(req.query as any));
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default new ArticlesController();

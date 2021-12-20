@@ -1,10 +1,8 @@
 import { User } from "../../../../authentication/models/user.model";
-import { uniqueId } from "lodash";
 
 export class Article {
-  public authorId: number;
-  public createdAt: number = new Date().getTime();
-  public id: number = +uniqueId();
+  public createdAt: number;
+  public _id: string;
   public likes: number[] = [];
 
   // for client side

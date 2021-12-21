@@ -4,9 +4,8 @@ import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { AppStoreModule } from "./store/app-store.module";
-import { NgxSpinnerModule } from "ngx-spinner";
-import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { HeaderModule } from "./shared/components/header/header.module";
+import { SharedModule } from "./shared/shared.module";
 
 @NgModule({
   declarations: [AppComponent],
@@ -15,11 +14,10 @@ import { HeaderModule } from "./shared/components/header/header.module";
     BrowserAnimationsModule,
     AppRoutingModule,
     AppStoreModule,
-    NgxSpinnerModule,
-    MatSnackBarModule,
-    HeaderModule,
+    SharedModule,
+    HeaderModule
   ],
   providers: [],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
 export class AppModule {}

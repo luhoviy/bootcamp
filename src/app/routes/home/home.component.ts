@@ -1,22 +1,10 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  OnInit,
-} from "@angular/core";
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from "@angular/core";
 import { Store } from "@ngrx/store";
-import { getArticlesList, updateArticles } from "../../store";
-import {
-  debounceTime,
-  distinctUntilChanged,
-  map,
-  Subject,
-  takeUntil,
-  withLatestFrom,
-} from "rxjs";
+import { deleteArticle, getArticlesList, toggleArticleLike } from "../../store";
+import { map, takeUntil, withLatestFrom } from "rxjs";
 import { Article } from "../articles/shared/models/article.model";
 import { ClearObservable } from "../../shared/components/clear-observable";
-import { cloneDeep, isEqual, orderBy } from "lodash";
+import { cloneDeep, orderBy } from "lodash";
 import { getCurrentUser } from "../../authentication/store";
 import { User } from "../../authentication/models/user.model";
 import { BreakpointObserver } from "@angular/cdk/layout";
@@ -25,11 +13,10 @@ import { BreakpointObserver } from "@angular/cdk/layout";
   selector: "app-home",
   templateUrl: "./home.component.html",
   styleUrls: ["./home.component.scss"],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomeComponent extends ClearObservable implements OnInit {
   articles: Article[] = [];
-  saveArticlesList$ = new Subject<Article[]>();
   currentUser: User;
   isDesktop: boolean;
 
@@ -57,16 +44,6 @@ export class HomeComponent extends ClearObservable implements OnInit {
         this.isDesktop = isDesktop;
         this.cdr.markForCheck();
       });
-
-    this.saveArticlesList$
-      .pipe(
-        debounceTime(700),
-        distinctUntilChanged((prev, current) => isEqual(prev, current)),
-        takeUntil(this.destroy$)
-      )
-      .subscribe((list) => {
-        this.store.dispatch(updateArticles({ list }));
-      });
   }
 
   private getArticles(): void {
@@ -78,7 +55,7 @@ export class HomeComponent extends ClearObservable implements OnInit {
           list = orderBy(cloneDeep(list), "createdAt", "desc");
           this.currentUser = user;
           return list.map((article) => {
-            article.currentUserLiked = article.likes.includes(user.id);
+            article.currentUserLiked = article.likes.includes(user._id);
             return article;
           });
         }),
@@ -90,11 +67,15 @@ export class HomeComponent extends ClearObservable implements OnInit {
       });
   }
 
-  toggleLikeStatement(article: Article, liked: boolean): void {
-    article.currentUserLiked = liked;
+  toggleLikeStatement(article: Article): void {
+    const liked = (article.currentUserLiked = !article.currentUserLiked);
     liked
-      ? article.likes.push(this.currentUser.id)
-      : (article.likes = article.likes.filter((id) => id !== this.currentUser.id));
-    this.saveArticlesList$.next(this.articles);
+      ? article.likes.push(this.currentUser._id)
+      : (article.likes = article.likes.filter((id) => id !== this.currentUser._id));
+    this.store.dispatch(toggleArticleLike({ article: cloneDeep(article) }));
+  }
+
+  deleteArticle(article: Article): void {
+    this.store.dispatch(deleteArticle({ id: article._id }));
   }
 }

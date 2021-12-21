@@ -1,6 +1,6 @@
 import { ArticleDTO } from "../dto/article.dto";
 import { Articles } from "../schemas/article.schema";
-import { isEmpty, uniq } from "lodash";
+import { isEmpty } from "lodash";
 import { InternalError } from "../common/error-handler";
 import { StatusCode } from "../common/enums";
 
@@ -31,28 +31,39 @@ class ArticlesService {
     return Articles.findByIdAndDelete(id);
   }
 
-  async toggleLikeStatement(params: { articleID: string; userID: string }): Promise<ArticleDTO> {
+  async likeArticle(params: { articleID: string; userID: string }): Promise<ArticleDTO> {
+    ArticlesService.validateQueryParams(params);
+    return Articles.findByIdAndUpdate(
+      params.articleID,
+      {
+        $addToSet: {
+          likes: params.userID
+        }
+      },
+      { new: true }
+    );
+  }
+
+  async dislikeArticle(params: { articleID: string; userID: string }): Promise<ArticleDTO> {
+    ArticlesService.validateQueryParams(params);
+    return Articles.findByIdAndUpdate(
+      params.articleID,
+      {
+        $pull: {
+          likes: params.userID
+        }
+      },
+      { new: true }
+    );
+  }
+
+  private static validateQueryParams(params: { articleID: string; userID: string }) {
     if (isEmpty(params) || isEmpty(params.articleID) || isEmpty(params.userID)) {
       throw new InternalError(
         "Invalid request. Required params articleID or userID are missing.",
         StatusCode.BAD_REQUEST
       );
     }
-
-    const article = await Articles.findById(params.articleID);
-    const alreadyLiked = article.likes.includes(params.userID);
-    article.likes = alreadyLiked
-      ? article.likes.filter((id) => id !== params.userID)
-      : [...article.likes, params.userID];
-    await Articles.updateOne(
-      { _id: params.articleID },
-      {
-        $set: {
-          likes: uniq(article.likes)
-        }
-      }
-    );
-    return article;
   }
 }
 

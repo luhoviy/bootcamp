@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { Store } from "@ngrx/store";
-import { catchError, filter, finalize, map, of, switchMap } from "rxjs";
+import { catchError, filter, finalize, map, of, switchMap, withLatestFrom } from "rxjs";
 import { tap } from "rxjs/operators";
 import { updateLoadingState } from "../app.actions";
 import { ToasterService } from "../../shared/services/toaster.service";
@@ -11,6 +11,7 @@ import { ArticlesService } from "../../routes/articles/shared/services/articles.
 import { HttpErrorResponse } from "@angular/common/http";
 import { ConfirmationDialogService } from "../../shared/confirmation-dialog/confirmation-dialog.service";
 import { ConfirmDialogData } from "../../shared/confirmation-dialog/confirmation-dialog.model";
+import { getCurrentUser } from "../../authentication/store";
 
 @Injectable()
 export class ArticlesEffects {
@@ -64,6 +65,21 @@ export class ArticlesEffects {
               finalize(() => this.store.dispatch(updateLoadingState({ isLoading: false })))
             );
           })
+        );
+      })
+    )
+  );
+
+  toggleArticleLikeStatement$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ArticleActions.toggleArticleLike),
+      map(({ article }) => article),
+      withLatestFrom(this.store.select(getCurrentUser)),
+      switchMap(([article, user]) => {
+        const params = { articleID: article._id, userID: user._id };
+        return this.articleService.toggleArticleLike(article.currentUserLiked, params).pipe(
+          map((article) => ArticleActions.toggleArticleLikeSuccess({ article })),
+          catchError((error) => of(ArticleActions.toggleArticleLikeFailure({ error })))
         );
       })
     )

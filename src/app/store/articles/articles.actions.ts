@@ -10,8 +10,11 @@ export const getArticles = createAction(GET_ARTICLES);
 export const getArticlesSuccess = createAction(GET_ARTICLES_SUCCESS, props<{ list: Article[] }>());
 export const getArticlesFailure = createAction(GET_ARTICLES_FAILURE, props<{ error: HttpErrorResponse }>());
 
-export const UPDATE_ARTICLES = "UPDATE_ARTICLES";
-export const updateArticles = createAction(UPDATE_ARTICLES, props<{ list: Article[] }>());
+export const UPDATE_ARTICLE = "UPDATE_ARTICLE";
+export const updateArticle = createAction(UPDATE_ARTICLE, props<{ article: Article }>());
+
+export const UPDATE_ARTICLES_LIST = "UPDATE_ARTICLES_LIST";
+export const updateArticlesList = createAction(UPDATE_ARTICLES_LIST, props<{ list: Article[] }>());
 
 export const CREATE_ARTICLE = "CREATE_ARTICLE";
 export const CREATE_ARTICLE_SUCCESS = "CREATE_ARTICLE_SUCCESS";
@@ -32,5 +35,19 @@ export const deleteArticle = createAction(DELETE_ARTICLE, props<{ id: string }>(
 export const deleteArticleSuccess = createAction(DELETE_ARTICLE_SUCCESS, props<{ article: Article }>());
 export const deleteArticleFailure = createAction(
   DELETE_ARTICLE_FAILURE,
+  props<{ error: HttpErrorResponse }>()
+);
+
+export const TOGGLE_ARTICLE_LIKE = "TOGGLE_ARTICLE_LIKE";
+export const TOGGLE_ARTICLE_LIKE_SUCCESS = "TOGGLE_ARTICLE_LIKE_SUCCESS";
+export const TOGGLE_ARTICLE_LIKE_FAILURE = "TOGGLE_ARTICLE_LIKE_FAILURE";
+
+export const toggleArticleLike = createAction(TOGGLE_ARTICLE_LIKE, props<{ article: Article }>());
+export const toggleArticleLikeSuccess = createAction(
+  TOGGLE_ARTICLE_LIKE_SUCCESS,
+  props<{ article: Article }>()
+);
+export const toggleArticleLikeFailure = createAction(
+  TOGGLE_ARTICLE_LIKE_FAILURE,
   props<{ error: HttpErrorResponse }>()
 );

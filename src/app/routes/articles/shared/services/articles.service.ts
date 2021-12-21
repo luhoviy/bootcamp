@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { Article } from "../models/article.model";
 
@@ -21,5 +21,10 @@ export class ArticlesService {
 
   deleteOne(id: string): Observable<Article> {
     return this.http.delete<Article>(`${this.API_URL}/${id}`);
+  }
+
+  toggleArticleLike(like: boolean, queryParams: { articleID: string; userID: string }): Observable<Article> {
+    const params = new HttpParams().set("articleID", queryParams.articleID).set("userID", queryParams.userID);
+    return this.http.patch<Article>(`${this.API_URL}/${like ? "like" : "dislike"}`, null, { params });
   }
 }

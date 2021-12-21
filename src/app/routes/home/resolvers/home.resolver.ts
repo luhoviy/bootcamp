@@ -24,7 +24,7 @@ export class HomeResolver implements Resolve<boolean> {
       }),
       catchError((error: HttpErrorResponse) => {
         this.store.dispatch(ArticleActions.getArticlesFailure({ error }));
-        this.store.dispatch(ArticleActions.updateArticles({ list: [] }));
+        this.store.dispatch(ArticleActions.updateArticlesList({ list: [] }));
         this.toaster.present(new Toast({ text: error.error.message, type: ToastType.ERROR }));
         return of(true);
       })

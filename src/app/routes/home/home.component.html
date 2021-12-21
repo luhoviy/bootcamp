@@ -80,7 +80,7 @@
 
               <ng-container *ngIf="article.currentUserLiked; else noLikeBtn">
                 <button
-                  (click)="toggleLikeStatement(article, !article.currentUserLiked)"
+                  (click)="toggleLikeStatement(article)"
                   mat-raised-button
                   color="primary"
                   class="pr-half pl-half"
@@ -91,7 +91,7 @@
 
               <ng-template #noLikeBtn>
                 <button
-                  (click)="toggleLikeStatement(article, !article.currentUserLiked)"
+                  (click)="toggleLikeStatement(article)"
                   mat-stroked-button
                   color="primary"
                   class="pr-half pl-half"
@@ -122,7 +122,7 @@
               fxLayoutAlign="end center"
             >
               <button (click)="deleteArticle(article)" mat-mini-fab color="warn">
-                <mat-icon>delete</mat-icon>
+                <mat-icon>delete_forever</mat-icon>
               </button>
             </div>
           </div>

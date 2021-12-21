@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from "@angular/core";
 import { Store } from "@ngrx/store";
-import { deleteArticle, getArticlesList, updateArticles } from "../../store";
+import { deleteArticle, getArticlesList, toggleArticleLike, updateArticlesList } from "../../store";
 import { debounceTime, distinctUntilChanged, map, Subject, takeUntil, withLatestFrom } from "rxjs";
 import { Article } from "../articles/shared/models/article.model";
 import { ClearObservable } from "../../shared/components/clear-observable";
@@ -53,7 +53,7 @@ export class HomeComponent extends ClearObservable implements OnInit {
         takeUntil(this.destroy$)
       )
       .subscribe((list) => {
-        this.store.dispatch(updateArticles({ list }));
+        this.store.dispatch(updateArticlesList({ list }));
       });
   }
 
@@ -78,12 +78,12 @@ export class HomeComponent extends ClearObservable implements OnInit {
       });
   }
 
-  toggleLikeStatement(article: Article, liked: boolean): void {
-    article.currentUserLiked = liked;
+  toggleLikeStatement(article: Article): void {
+    const liked = (article.currentUserLiked = !article.currentUserLiked);
     liked
       ? article.likes.push(this.currentUser._id)
       : (article.likes = article.likes.filter((id) => id !== this.currentUser._id));
-    this.saveArticlesList$.next(this.articles);
+    this.store.dispatch(toggleArticleLike({ article: cloneDeep(article) }));
   }
 
   deleteArticle(article: Article): void {

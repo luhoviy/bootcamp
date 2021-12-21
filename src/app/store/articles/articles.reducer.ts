@@ -5,7 +5,16 @@ import { cloneDeep } from "lodash";
 
 const reducer = createReducer(
   ArticlesInitialState,
-  on(ArticlesActions.getArticlesSuccess, ArticlesActions.updateArticles, (state, { list }) => {
+  on(ArticlesActions.getArticlesSuccess, ArticlesActions.updateArticlesList, (state, { list }) => {
+    return {
+      ...state,
+      list
+    };
+  }),
+  on(ArticlesActions.updateArticle, ArticlesActions.toggleArticleLikeSuccess, (state, { article }) => {
+    const list = cloneDeep(state.list);
+    const articleIndex = list.findIndex((el) => el._id === article._id);
+    list[articleIndex] = article;
     return {
       ...state,
       list

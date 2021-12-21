@@ -28,13 +28,21 @@ class ArticlesController {
     }
   }
 
-  async toggleLikeStatement(
+  async likeArticle(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+    try {
+      res.json(await articlesService.likeArticle(req.query as any));
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async dislikeArticle(
     req: express.Request,
     res: express.Response,
     next: express.NextFunction
   ): Promise<void> {
     try {
-      res.json(await articlesService.toggleLikeStatement(req.query as any));
+      res.json(await articlesService.dislikeArticle(req.query as any));
     } catch (error) {
       next(error);
     }

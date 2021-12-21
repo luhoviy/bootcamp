@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from "@angular/core";
 import { Store } from "@ngrx/store";
-import { deleteArticle, getArticlesList, toggleArticleLike, updateArticlesList } from "../../store";
-import { debounceTime, distinctUntilChanged, map, Subject, takeUntil, withLatestFrom } from "rxjs";
+import { deleteArticle, getArticlesList, toggleArticleLike } from "../../store";
+import { map, takeUntil, withLatestFrom } from "rxjs";
 import { Article } from "../articles/shared/models/article.model";
 import { ClearObservable } from "../../shared/components/clear-observable";
-import { cloneDeep, isEqual, orderBy } from "lodash";
+import { cloneDeep, orderBy } from "lodash";
 import { getCurrentUser } from "../../authentication/store";
 import { User } from "../../authentication/models/user.model";
 import { BreakpointObserver } from "@angular/cdk/layout";
@@ -17,7 +17,6 @@ import { BreakpointObserver } from "@angular/cdk/layout";
 })
 export class HomeComponent extends ClearObservable implements OnInit {
   articles: Article[] = [];
-  saveArticlesList$ = new Subject<Article[]>();
   currentUser: User;
   isDesktop: boolean;
 
@@ -44,16 +43,6 @@ export class HomeComponent extends ClearObservable implements OnInit {
       .subscribe((isDesktop) => {
         this.isDesktop = isDesktop;
         this.cdr.markForCheck();
-      });
-
-    this.saveArticlesList$
-      .pipe(
-        debounceTime(700),
-        distinctUntilChanged((prev, current) => isEqual(prev, current)),
-        takeUntil(this.destroy$)
-      )
-      .subscribe((list) => {
-        this.store.dispatch(updateArticlesList({ list }));
       });
   }
 

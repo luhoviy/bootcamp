@@ -73,9 +73,8 @@ export class ArticlesEffects {
   toggleArticleLikeStatement$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ArticleActions.toggleArticleLike),
-      map(({ article }) => article),
       withLatestFrom(this.store.select(getCurrentUser)),
-      switchMap(([article, user]) => {
+      switchMap(([{ article }, user]) => {
         const params = { articleID: article._id, userID: user._id };
         return this.articleService.toggleArticleLike(article.currentUserLiked, params).pipe(
           map((article) => ArticleActions.toggleArticleLikeSuccess({ article })),

@@ -3,12 +3,18 @@ import { AppRouter } from "./core/app.router";
 import express from "express";
 import path from "path";
 import mongoose from "mongoose";
+import morgan from "morgan";
+import cors from "cors";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
 const distPath = path.resolve("..", "dist");
-const PORT = 3000;
-const DB_URL = "mongodb+srv://user:test123@cluster0.ttm0a.mongodb.net/Bootcamp?retryWrites=true&w=majority";
+const { DB_URL, PORT } = process.env;
 
+app.use(morgan("tiny"));
+app.use(cors());
 app.use(express.json());
 app.use(express.static(distPath));
 app.use("/api", AppRouter);

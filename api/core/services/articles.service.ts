@@ -1,39 +1,39 @@
 import { ArticleDTO } from "../dto/article.dto";
-import { Articles } from "../schemas/article.schema";
+import { ArticleModel } from "../models/article.model";
 import { isEmpty } from "lodash";
 import { InternalError } from "../common/error-handler";
-import { StatusCode } from "../common/enums";
+import { Role, StatusCode } from "../common/enums";
 
 class ArticlesService {
   async getAll(): Promise<ArticleDTO[]> {
-    return Articles.find();
+    return ArticleModel.find();
   }
 
   async create(article: ArticleDTO): Promise<ArticleDTO> {
     if (isEmpty(article)) {
-      throw new InternalError("Article data is missing in request body.", StatusCode.BAD_REQUEST);
+      throw InternalError.BadRequest("Article data is missing in request body.");
     }
 
-    article.createdAt = new Date().getTime();
     // temporary mocked user
     article.author = {
       firstName: "John",
       email: "john.doe@mail.com",
       lastName: "Doe",
       _id: "666",
-      displayName: "John Doe"
+      displayName: "John Doe",
+      roles: [Role.USER]
     };
 
-    return Articles.create(article);
+    return ArticleModel.create(article);
   }
 
   async deleteOne(id: string): Promise<ArticleDTO> {
-    return Articles.findByIdAndDelete(id);
+    return ArticleModel.findByIdAndDelete(id);
   }
 
   async likeArticle(params: { articleID: string; userID: string }): Promise<ArticleDTO> {
     ArticlesService.validateQueryParams(params);
-    return Articles.findByIdAndUpdate(
+    return ArticleModel.findByIdAndUpdate(
       params.articleID,
       {
         $addToSet: {
@@ -46,7 +46,7 @@ class ArticlesService {
 
   async dislikeArticle(params: { articleID: string; userID: string }): Promise<ArticleDTO> {
     ArticlesService.validateQueryParams(params);
-    return Articles.findByIdAndUpdate(
+    return ArticleModel.findByIdAndUpdate(
       params.articleID,
       {
         $pull: {

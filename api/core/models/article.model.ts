@@ -4,9 +4,9 @@ import { ArticleDTO } from "../dto/article.dto";
 const schema = new Schema<ArticleDTO>({
   title: { type: String, required: true },
   description: { type: String, required: true },
-  createdAt: Number,
   likes: [String],
+  createdAt: { type: Number, default: Date.now() },
   author: Object
 });
 
-export const Articles = model<ArticleDTO>("articles", schema);
+export const ArticleModel = model<ArticleDTO>("articles", schema);

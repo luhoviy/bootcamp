@@ -6,7 +6,8 @@ const schema = new Schema<UserDTO>({
   password: { type: String, required: true },
   firstName: { type: String, required: true },
   lastName: { type: String },
-  displayName: { type: String }
+  displayName: { type: String },
+  roles: [{ type: String, ref: "roles" }]
 });
 
 export const UserModel = model<UserDTO>("users", schema);

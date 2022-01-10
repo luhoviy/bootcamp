@@ -2,7 +2,7 @@ import { ArticleDTO } from "../dto/article.dto";
 import { ArticleModel } from "../models/article.model";
 import { isEmpty } from "lodash";
 import { InternalError } from "../common/error-handler";
-import { StatusCode } from "../common/enums";
+import { Role, StatusCode } from "../common/enums";
 
 class ArticlesService {
   async getAll(): Promise<ArticleDTO[]> {
@@ -20,7 +20,8 @@ class ArticlesService {
       email: "john.doe@mail.com",
       lastName: "Doe",
       _id: "666",
-      displayName: "John Doe"
+      displayName: "John Doe",
+      roles: [Role.USER]
     };
 
     return ArticleModel.create(article);

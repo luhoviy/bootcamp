@@ -1,11 +1,12 @@
 import { UserDTO, UserJwtPayload } from "../dto/user.dto";
 import { UserModel } from "../models/user.model";
 import { InternalError } from "../common/error-handler";
-import { StatusCode } from "../common/enums";
+import { Role, StatusCode } from "../common/enums";
 import { compare, hash } from "bcrypt";
 import TokenService from "./token.service";
 import { AuthResponse } from "../common/interfaces";
 import { isEmpty } from "lodash";
+import { RoleModel } from "../models/role.model";
 
 class AuthService {
   private static async saveTokenAndBuildAuthResponse(user: UserDTO): Promise<AuthResponse> {
@@ -23,7 +24,12 @@ class AuthService {
       throw new InternalError(`User with email ${user.email} already exists!`, StatusCode.CONFLICT);
     }
     const hashPassword = await hash(user.password, 5);
-    const userDto = await UserModel.create({ ...user, password: hashPassword });
+    const userRole = await RoleModel.findOne({ type: Role.USER });
+    const userDto = await UserModel.create({
+      ...new UserDTO(user),
+      password: hashPassword,
+      roles: [userRole.type]
+    });
     return AuthService.saveTokenAndBuildAuthResponse(userDto);
   }
 
@@ -34,7 +40,7 @@ class AuthService {
     }
     const isCorrectPassword = await compare(password, user.password);
     if (!isCorrectPassword) {
-      throw new InternalError("Incorrect password", StatusCode.FORBIDDEN);
+      throw InternalError.Forbidden("Incorrect password");
     }
     return AuthService.saveTokenAndBuildAuthResponse(user);
   }

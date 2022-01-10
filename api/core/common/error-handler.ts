@@ -38,6 +38,10 @@ export class InternalError {
   static NotFound(message: string) {
     return new InternalError(message, StatusCode.NOT_FOUND);
   }
+
+  static Forbidden(message = "Access denied") {
+    return new InternalError(message, StatusCode.FORBIDDEN);
+  }
 }
 
 export function handleInvalidBodyRequest(res: express.Response, errors: Result<ValidationError>): void {

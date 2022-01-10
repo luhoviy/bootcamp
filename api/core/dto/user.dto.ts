@@ -1,10 +1,14 @@
+import { Role } from "../common/enums";
+
 export class UserJwtPayload {
   _id: string;
   email: string;
+  roles: Role[];
 
   constructor(user: UserDTO) {
     this._id = user._id;
     this.email = user.email;
+    this.roles = user.roles;
   }
 }
 

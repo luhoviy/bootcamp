@@ -10,7 +10,3 @@ export const getIsLoggedIn = createSelector(getCurrentUser, (user) => !!user);
 export const getAccessToken = createSelector(getAuthenticationState, (state) =>
   state ? state.accessToken : null
 );
-
-export const getRefreshToken = createSelector(getAuthenticationState, (state) =>
-  state ? state.accessToken : null
-);

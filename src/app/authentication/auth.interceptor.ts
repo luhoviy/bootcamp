@@ -69,7 +69,7 @@ export class AuthInterceptor implements HttpInterceptor {
       take(1),
       switchMap((authResponse) => {
         this.store.dispatch(refreshTokenSuccess({ authResponse }));
-        return next.handle(this.setAuthHeader(request)).pipe();
+        return next.handle(this.setAuthHeader(request));
       }),
       catchError((err) => {
         this.store.dispatch(logout());

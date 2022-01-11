@@ -1,9 +1,6 @@
-import { ChangeDetectionStrategy, Component, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { Store } from "@ngrx/store";
-import { getCurrentUser, logout } from "../../../authentication/store";
-import { User } from "../../../authentication/models/user.model";
-import { ClearObservable } from "../clear-observable";
-import { takeUntil } from "rxjs";
+import { logout } from "../../../authentication/store";
 
 interface NavItem {
   path: string;
@@ -17,7 +14,7 @@ interface NavItem {
   styleUrls: ["./header.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HeaderComponent extends ClearObservable implements OnInit {
+export class HeaderComponent {
   readonly routes: NavItem[] = [
     {
       path: "/home",
@@ -30,18 +27,8 @@ export class HeaderComponent extends ClearObservable implements OnInit {
       icon: "post_add"
     }
   ];
-  user: User;
 
-  constructor(private store: Store) {
-    super();
-  }
-
-  ngOnInit(): void {
-    this.store
-      .select(getCurrentUser)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((user) => (this.user = user));
-  }
+  constructor(private store: Store) {}
 
   logout(): void {
     this.store.dispatch(logout());

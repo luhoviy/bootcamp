@@ -26,17 +26,12 @@ const reducer = createReducer(
       };
     }
   ),
-  on(
-    AuthActions.loginFailure,
-    AuthActions.signUpFailure,
-    AuthActions.refreshTokenFailure,
-    (state, { error }) => {
-      return {
-        ...state,
-        error
-      };
-    }
-  ),
+  on(AuthActions.loginFailure, AuthActions.signUpFailure, (state, { error }) => {
+    return {
+      ...state,
+      error
+    };
+  }),
   on(AuthActions.clearAuthState, () => {
     return {
       ...initialState

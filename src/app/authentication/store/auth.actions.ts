@@ -16,15 +16,11 @@ export const signUp = createAction(SIGNUP, props<{ userInfo: SignUpInfo }>());
 export const signUpSuccess = createAction(SIGNUP_SUCCESS, props<{ authResponse: AuthResponse }>());
 export const signUpFailure = createAction(SIGNUP_FAILURE, props<{ error: HttpErrorResponse }>());
 
-export const REFRESH_TOKEN = "REFRESH_TOKEN";
 export const REFRESH_TOKEN_SUCCESS = "REFRESH_TOKEN_SUCCESS";
-export const REFRESH_TOKEN_FAILURE = "REFRESH_TOKEN_FAILURE";
-export const refreshToken = createAction(REFRESH_TOKEN);
 export const refreshTokenSuccess = createAction(
   REFRESH_TOKEN_SUCCESS,
   props<{ authResponse: AuthResponse }>()
 );
-export const refreshTokenFailure = createAction(REFRESH_TOKEN_FAILURE, props<{ error: HttpErrorResponse }>());
 
 export const LOGOUT = "LOGOUT";
 export const logout = createAction(LOGOUT);

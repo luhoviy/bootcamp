@@ -14,7 +14,7 @@ import { isEmpty } from "lodash";
 import { AuthResponse } from "../models/auth.model";
 
 @Injectable()
-export class ArticlesEffects {
+export class AuthEffects {
   constructor(
     private actions$: Actions,
     private store: Store,

@@ -4,7 +4,7 @@ export class ArticleDTO {
   _id: string;
   title: string;
   description: string;
-  createdAt: number;
+  createdAt: string;
   likes: string[];
   author: UserDTO;
 

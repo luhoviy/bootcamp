@@ -7,7 +7,7 @@ import { TokenDto } from "../dto/token.dto";
 class TokenService {
   generateTokens(payload: UserJwtPayload): JwtTokens {
     const { JWT_ACCESS_SECRET, JWT_REFRESH_SECRET } = process.env;
-    const accessToken = jwt.sign(payload, JWT_ACCESS_SECRET, { expiresIn: "30m" });
+    const accessToken = jwt.sign(payload, JWT_ACCESS_SECRET, { expiresIn: "1h" });
     const refreshToken = jwt.sign(payload, JWT_REFRESH_SECRET, { expiresIn: "30d" });
     return {
       accessToken,

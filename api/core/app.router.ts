@@ -11,7 +11,7 @@ export const AppRouter = express.Router();
 
 AppRouter.use("/articles", AuthMiddleware, ArticlesRouter);
 AppRouter.use("/auth", AuthRouter);
-AppRouter.use("/users", [AuthMiddleware, RoleMiddleware[Role.ADMIN]], UsersRouter);
+AppRouter.use("/users", [AuthMiddleware, RoleMiddleware(Role.ADMIN)], UsersRouter);
 
 AppRouter.use("*", (req, res, next: express.NextFunction) => {
   next(new InternalError("Not Found", StatusCode.NOT_FOUND));

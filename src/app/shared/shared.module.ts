@@ -12,9 +12,10 @@ import { HttpClientModule } from "@angular/common/http";
 import { LoadingBarRouterModule } from "@ngx-loading-bar/router";
 import { MatDialogModule } from "@angular/material/dialog";
 import { ConfirmationDialogComponent } from "./confirmation-dialog/confirmation-dialog.component";
+import { StopPropagationDirective } from "./directives/stop-propagation.directive";
 
 @NgModule({
-  declarations: [ClearObservable, HumanizedTimePipe, ConfirmationDialogComponent],
+  declarations: [ClearObservable, HumanizedTimePipe, ConfirmationDialogComponent, StopPropagationDirective],
   imports: [
     CommonModule,
     FlexLayoutModule,
@@ -38,7 +39,8 @@ import { ConfirmationDialogComponent } from "./confirmation-dialog/confirmation-
     HumanizedTimePipe,
     LoadingBarRouterModule,
     MatDialogModule,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    StopPropagationDirective
   ]
 })
 export class SharedModule {}

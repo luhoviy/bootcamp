@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { Store } from "@ngrx/store";
-import { catchError, filter, finalize, map, of, switchMap, withLatestFrom } from "rxjs";
+import { catchError, filter, finalize, map, of, switchMap, take, withLatestFrom } from "rxjs";
 import { tap } from "rxjs/operators";
 import { updateLoadingState } from "../app.actions";
 import { ToasterService } from "../../shared/services/toaster.service";
@@ -29,6 +29,7 @@ export class ArticlesEffects {
       tap(() => this.store.dispatch(updateLoadingState({ isLoading: true }))),
       switchMap(({ article }) => {
         return this.articleService.create(article).pipe(
+          take(1),
           map((createdArticle) => {
             this.toaster.present(new Toast({ text: "Article has been successfully published!" }));
             return ArticleActions.createArticleSuccess({ article: createdArticle });
@@ -57,6 +58,7 @@ export class ArticlesEffects {
           tap(() => this.store.dispatch(updateLoadingState({ isLoading: true }))),
           switchMap(() => {
             return this.articleService.deleteOne(id).pipe(
+              take(1),
               map((article) => ArticleActions.deleteArticleSuccess({ article })),
               catchError((error: HttpErrorResponse) => {
                 this.toaster.present(Toast.buildHttpErrorToast(error));
@@ -77,6 +79,7 @@ export class ArticlesEffects {
       switchMap(([{ article }, user]) => {
         const params = { articleID: article._id, userID: user._id };
         return this.articleService.toggleArticleLike(article.currentUserLiked, params).pipe(
+          take(1),
           map((article) => ArticleActions.toggleArticleLikeSuccess({ article })),
           catchError((error) => of(ArticleActions.toggleArticleLikeFailure({ error })))
         );

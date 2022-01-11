@@ -1,0 +1,14 @@
+<div fxLayout="row" fxLayoutAlign="space-between start" class="auth-container">
+  <img
+    class="auth-container__img"
+    src="../../../../assets/img/{{ image }}.jpeg"
+    [attr.alt]="image"
+    fxFlex="40"
+    fxHide.lt-md
+    appImageFadeIn
+  />
+
+  <div class="w-100 h-100 overflow-y" fxFlex.gt-sm="60">
+    <ng-content></ng-content>
+  </div>
+</div>

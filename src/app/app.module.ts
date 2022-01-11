@@ -6,6 +6,9 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { AppStoreModule } from "./store/app-store.module";
 import { HeaderModule } from "./shared/components/header/header.module";
 import { SharedModule } from "./shared/shared.module";
+import { LoginModule } from "./routes/login/login.module";
+import { HTTP_INTERCEPTORS } from "@angular/common/http";
+import { AuthInterceptor } from "./authentication/auth.interceptor";
 
 @NgModule({
   declarations: [AppComponent],
@@ -15,9 +18,16 @@ import { SharedModule } from "./shared/shared.module";
     AppRoutingModule,
     AppStoreModule,
     SharedModule,
-    HeaderModule
+    HeaderModule,
+    LoginModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

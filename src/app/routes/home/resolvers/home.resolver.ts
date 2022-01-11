@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Resolve } from "@angular/router";
-import { catchError, map, Observable, of } from "rxjs";
+import { catchError, map, Observable, of, take } from "rxjs";
 import { Store } from "@ngrx/store";
 import { ArticlesService } from "../../articles/shared/services/articles.service";
 import * as ArticleActions from "../../../store/articles/articles.actions";
@@ -18,6 +18,7 @@ export class HomeResolver implements Resolve<boolean> {
 
   resolve(): Observable<boolean> {
     return this.articlesService.getAll().pipe(
+      take(1),
       map((list) => {
         this.store.dispatch(ArticleActions.getArticlesSuccess({ list }));
         return true;

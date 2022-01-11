@@ -6,6 +6,14 @@ $my-custom-typography: mat.define-typography-config(
 );
 @include mat.core($my-custom-typography);
 
+// hide inputs autofill effect
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  transition: background-color 9999s ease-in-out 0s, color 9999s ease-out;
+}
+
 // Snackbars
 .mat-snack-bar-container {
   max-width: 90vw;

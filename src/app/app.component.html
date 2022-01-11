@@ -1,4 +1,4 @@
-<app-header></app-header>
+<app-header *ngIf="!(isAuthSection$ | async)"></app-header>
 
 <main class="main-container">
   <router-outlet></router-outlet>

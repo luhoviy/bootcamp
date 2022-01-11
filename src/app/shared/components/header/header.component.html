@@ -1,8 +1,4 @@
-<header
-  class="header p-1 w-100"
-  fxLayout="row"
-  fxLayoutAlign="space-between center"
->
+<header class="header p-1 w-100" fxLayout="row" fxLayoutAlign="space-between center">
   <a
     routerLink="/home"
     class="header__logo pointer"
@@ -26,7 +22,6 @@
       [routerLink]="route.path"
       routerLinkActive="active"
       mat-button
-      color="primary"
       class="header__nav__btn"
     >
       <div fxLayoutAlign="start center">
@@ -35,13 +30,14 @@
         ></ng-container>
       </div>
     </a>
+
+    <button class="header__nav__btn" mat-stroked-button (click)="logout()">
+      <mat-icon class="mr-half">logout</mat-icon>
+      Logout
+    </button>
   </nav>
 
-  <button
-    fxHide.gt-xs
-    [matMenuTriggerFor]="profileMenu"
-    mat-icon-button
-  >
+  <button fxHide.gt-xs [matMenuTriggerFor]="profileMenu" mat-icon-button>
     <mat-icon class="menu-icon">menu</mat-icon>
   </button>
 
@@ -56,6 +52,10 @@
         *ngTemplateOutlet="routeBtn; context: { $implicit: route }"
       ></ng-container>
     </a>
+    <button mat-menu-item (click)="logout()">
+      <mat-icon class="mr-half">logout</mat-icon>
+      Logout
+    </button>
   </mat-menu>
 
   <ng-template #routeBtn let-route>

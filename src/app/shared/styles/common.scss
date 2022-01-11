@@ -52,6 +52,16 @@
     white-space: nowrap;
   }
 
+  .link {
+    text-decoration: none;
+    color: $primary;
+
+    &:hover {
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  }
+
   .divider {
     min-height: 1px;
     height: 1px;

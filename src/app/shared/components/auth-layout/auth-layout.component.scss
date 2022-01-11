@@ -1,0 +1,10 @@
+.auth-container {
+  height: 100vh;
+
+  &__img {
+    min-height: 100vh;
+    max-height: 100vh;
+    object-fit: cover;
+    object-position: center;
+  }
+}

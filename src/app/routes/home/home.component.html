@@ -47,16 +47,7 @@
             >
               <div fxLayoutAlign="start start" fxLayoutGap="1rem">
                 <div class="avatar">
-                  <ng-container *ngIf="article.author?.photoUrl; else noPhoto">
-                    <img
-                      [src]="article.author.photoUrl"
-                      [attr.alt]="article.author.displayName + ' avatar'"
-                    />
-                  </ng-container>
-
-                  <ng-template #noPhoto>
-                    <mat-icon>person</mat-icon>
-                  </ng-template>
+                  <mat-icon>person</mat-icon>
                 </div>
 
                 <div fxLayout="column">

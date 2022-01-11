@@ -1,9 +1,16 @@
 import { User } from "../models/user.model";
+import { HttpErrorResponse } from "@angular/common/http";
 
 export interface AuthState {
-  user: User;
+  readonly accessToken: string;
+  readonly refreshToken: string;
+  readonly user: User;
+  readonly error: HttpErrorResponse;
 }
 
 export const initialState: AuthState = {
-  user: User.getMockedUser(),
+  accessToken: null,
+  refreshToken: null,
+  user: null,
+  error: null
 };

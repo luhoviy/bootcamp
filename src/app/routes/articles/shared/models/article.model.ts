@@ -1,7 +1,7 @@
 import { User } from "../../../../authentication/models/user.model";
 
 export class Article {
-  public createdAt: number;
+  public createdAt: string;
   public _id: string;
   public likes: string[] = [];
 

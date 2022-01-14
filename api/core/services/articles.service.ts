@@ -2,68 +2,75 @@ import { ArticleDTO } from "../dto/article.dto";
 import { ArticleModel } from "../models/article.model";
 import { isEmpty } from "lodash";
 import { InternalError } from "../common/error-handler";
-import { Role, StatusCode } from "../common/enums";
+import { UserJwtPayload } from "../dto/user.dto";
+import { Query } from "mongoose";
 
 class ArticlesService {
-  async getAll(): Promise<ArticleDTO[]> {
-    return ArticleModel.find();
+  private static populateArticleQuery(query: Query<any, any>) {
+    return query
+      .populate({
+        path: "comments",
+        populate: { path: "author", select: { password: 0 } }
+      })
+      .populate("author", { password: 0 });
   }
 
-  async create(article: ArticleDTO): Promise<ArticleDTO> {
+  async getAll(): Promise<ArticleDTO[]> {
+    return ArticlesService.populateArticleQuery(ArticleModel.find());
+  }
+
+  async getOne(_id: string): Promise<ArticleDTO> {
+    return ArticlesService.populateArticleQuery(ArticleModel.find({ _id }));
+  }
+
+  async create(article: ArticleDTO, user: UserJwtPayload): Promise<ArticleDTO> {
     if (isEmpty(article)) {
       throw InternalError.BadRequest("Article data is missing in request body.");
     }
 
-    // temporary mocked user
-    article.author = {
-      firstName: "John",
-      email: "john.doe@mail.com",
-      lastName: "Doe",
-      _id: "666",
-      displayName: "John Doe",
-      roles: [Role.USER]
-    };
-
+    article.author = user._id;
     return ArticleModel.create(article);
   }
 
-  async deleteOne(id: string): Promise<ArticleDTO> {
-    return ArticleModel.findByIdAndDelete(id);
+  async deleteOne(_id: string): Promise<void> {
+    await ArticleModel.deleteOne({ _id });
+    return;
   }
 
-  async likeArticle(params: { articleID: string; userID: string }): Promise<ArticleDTO> {
-    ArticlesService.validateQueryParams(params);
+  async likeArticle(articleID: string, user: UserJwtPayload): Promise<ArticleDTO> {
     return ArticleModel.findByIdAndUpdate(
-      params.articleID,
+      articleID,
       {
         $addToSet: {
-          likes: params.userID
+          likes: user._id
         }
       },
       { new: true }
     );
   }
 
-  async dislikeArticle(params: { articleID: string; userID: string }): Promise<ArticleDTO> {
-    ArticlesService.validateQueryParams(params);
+  async dislikeArticle(articleID: string, user: UserJwtPayload): Promise<ArticleDTO> {
     return ArticleModel.findByIdAndUpdate(
-      params.articleID,
+      articleID,
       {
         $pull: {
-          likes: params.userID
+          likes: user._id
         }
       },
       { new: true }
     );
   }
 
-  private static validateQueryParams(params: { articleID: string; userID: string }) {
-    if (isEmpty(params) || isEmpty(params.articleID) || isEmpty(params.userID)) {
-      throw new InternalError(
-        "Invalid request. Required params articleID or userID are missing.",
-        StatusCode.BAD_REQUEST
-      );
-    }
+  async addComment(articleID: string, commentID: string): Promise<ArticleDTO> {
+    return ArticleModel.findByIdAndUpdate(
+      articleID,
+      {
+        $addToSet: {
+          comments: commentID
+        }
+      },
+      { new: true }
+    );
   }
 }
 

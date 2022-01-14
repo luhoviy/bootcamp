@@ -1,6 +1,5 @@
 import express from "express";
 import { StatusCode } from "./enums";
-import { Result, ValidationError } from "express-validator";
 import { isEmpty } from "lodash";
 
 export function ErrorHandlerMiddleware(
@@ -35,21 +34,11 @@ export class InternalError {
     return new InternalError(message, StatusCode.BAD_REQUEST, errors);
   }
 
-  static NotFound(message: string) {
+  static NotFound(message: string = "Not found") {
     return new InternalError(message, StatusCode.NOT_FOUND);
   }
 
   static Forbidden(message = "Access denied") {
     return new InternalError(message, StatusCode.FORBIDDEN);
   }
-}
-
-export function handleInvalidBodyRequest(res: express.Response, errors: Result<ValidationError>): void {
-  const mappedErrors = errors.array().map((err) => ({
-    message: err.msg,
-    field: err.param
-  }));
-  res
-    .status(StatusCode.BAD_REQUEST)
-    .json(InternalError.BadRequest("Invalid request body provided.", mappedErrors));
 }

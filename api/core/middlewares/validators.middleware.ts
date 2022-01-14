@@ -1,4 +1,8 @@
-import { check, ValidationChain } from "express-validator";
+import { check, ValidationChain, validationResult } from "express-validator";
+import express from "express";
+import { StatusCode } from "../common/enums";
+import { InternalError } from "../common/error-handler";
+import { isEmpty } from "lodash";
 
 export class RequestBodyValidator {
   static validateByMinLength(fieldName: string, min: number): ValidationChain {
@@ -31,4 +35,44 @@ export class RequestBodyValidator {
       RequestBodyValidator.validateByMinLength("firstName", 2)
     ];
   }
+}
+
+export function validateBodyRequest(
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+): void {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    const mappedErrors = errors.array().map((err) => ({
+      message: err.msg,
+      field: err.param
+    }));
+    res
+      .status(StatusCode.BAD_REQUEST)
+      .json(InternalError.BadRequest("Invalid request body provided.", mappedErrors));
+    return;
+  }
+  next();
+}
+
+export function validateQueryParams(requiredParams: string[] | string) {
+  requiredParams = Array.isArray(requiredParams) ? requiredParams : [requiredParams];
+  return (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    const invalidParams: string[] = [];
+    (requiredParams as string[]).forEach((param) => {
+      if (isEmpty(req.query[param])) {
+        invalidParams.push(param);
+      }
+      if (invalidParams.length) {
+        res
+          .status(StatusCode.BAD_REQUEST)
+          .json(
+            InternalError.BadRequest(`Required param(s): ${invalidParams.join(",")} are missing or invalid.`)
+          );
+        return;
+      }
+      next();
+    });
+  };
 }

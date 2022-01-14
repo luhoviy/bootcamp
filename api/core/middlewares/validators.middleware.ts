@@ -37,7 +37,7 @@ export class RequestBodyValidator {
   }
 }
 
-export function validateBodyRequest(
+export function validateRequestBody(
   req: express.Request,
   res: express.Response,
   next: express.NextFunction

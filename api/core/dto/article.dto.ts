@@ -7,6 +7,7 @@ export class ArticleDTO {
   createdAt: string;
   likes: string[];
   comments: string[];
+  tags: string[];
   author: string | Schema.Types.ObjectId;
 
   constructor(article: ArticleDTO) {
@@ -16,6 +17,7 @@ export class ArticleDTO {
     this.createdAt = article.createdAt;
     this.likes = article.likes;
     this.comments = article.comments;
+    this.tags = article.tags;
     this.author = article.author;
   }
 }

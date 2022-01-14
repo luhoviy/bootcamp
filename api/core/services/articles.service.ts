@@ -12,7 +12,8 @@ class ArticlesService {
         path: "comments",
         populate: { path: "author", select: { password: 0 } }
       })
-      .populate("author", { password: 0 });
+      .populate("author", { password: 0 })
+      .populate("tags");
   }
 
   async getAll(): Promise<ArticleDTO[]> {

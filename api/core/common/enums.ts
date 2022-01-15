@@ -14,3 +14,8 @@ export enum Role {
   USER = "USER",
   ADMIN = "ADMIN"
 }
+
+export enum SortOrder {
+  DESC = "desc",
+  ASC = "asc"
+}

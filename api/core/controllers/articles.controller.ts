@@ -7,7 +7,8 @@ import { InternalError } from "../common/error-handler";
 class ArticlesController {
   async getAll(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
     try {
-      res.json(await articlesService.getAll());
+      const list = await articlesService.getAll(req.query);
+      res.json(list);
     } catch (error) {
       next(error);
     }
@@ -64,6 +65,30 @@ class ArticlesController {
       const user: UserJwtPayload = req["user"];
       const response = await articlesService.dislikeArticle(articleID as string, user);
       res.json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async addTag(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+    try {
+      const user: UserJwtPayload = req["user"];
+      const { id } = req.params;
+      const { tag } = req.query;
+      const response = await articlesService.addTag(id, tag as string, user);
+      res.json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async removeTag(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+    try {
+      const user: UserJwtPayload = req["user"];
+      const { id } = req.params;
+      const { tag } = req.query;
+      await articlesService.removeTag(id, tag as string, user);
+      res.sendStatus(StatusCode.NO_CONTENT);
     } catch (error) {
       next(error);
     }

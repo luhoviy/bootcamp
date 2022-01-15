@@ -10,3 +10,5 @@ ArticlesRouter.post("/", controller.create);
 ArticlesRouter.delete("/:id", controller.deleteOne);
 ArticlesRouter.patch("/like", validateQueryParams("articleID"), controller.likeArticle);
 ArticlesRouter.patch("/dislike", validateQueryParams("articleID"), controller.dislikeArticle);
+ArticlesRouter.post("/:id/tag", validateQueryParams("tag"), controller.addTag);
+ArticlesRouter.delete("/:id/tag", validateQueryParams("tag"), controller.removeTag);

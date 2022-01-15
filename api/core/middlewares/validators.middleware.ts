@@ -68,7 +68,9 @@ export function validateQueryParams(requiredParams: string[] | string) {
         res
           .status(StatusCode.BAD_REQUEST)
           .json(
-            InternalError.BadRequest(`Required param(s): ${invalidParams.join(",")} are missing or invalid.`)
+            InternalError.BadRequest(
+              `Required param(s): '${invalidParams.join(",")}' are missing or invalid.`
+            )
           );
         return;
       }

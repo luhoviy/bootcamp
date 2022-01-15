@@ -8,6 +8,10 @@ class TagService {
     return TagModel.find();
   }
 
+  async getOne(text: string): Promise<TagDto> {
+    return TagModel.findOne({ text });
+  }
+
   async add(text: string): Promise<TagDto> {
     return TagModel.create({ text });
   }

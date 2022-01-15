@@ -64,17 +64,16 @@ export function validateQueryParams(requiredParams: string[] | string) {
       if (isEmpty(req.query[param])) {
         invalidParams.push(param);
       }
-      if (invalidParams.length) {
-        res
-          .status(StatusCode.BAD_REQUEST)
-          .json(
-            InternalError.BadRequest(
-              `Required param(s): '${invalidParams.join(",")}' are missing or invalid.`
-            )
-          );
-        return;
-      }
-      next();
     });
+
+    if (invalidParams.length) {
+      res
+        .status(StatusCode.BAD_REQUEST)
+        .json(
+          InternalError.BadRequest(`Required param(s): '${invalidParams.join(",")}' are missing or invalid.`)
+        );
+      return;
+    }
+    next();
   };
 }

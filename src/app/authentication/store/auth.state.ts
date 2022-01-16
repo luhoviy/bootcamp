@@ -1,4 +1,4 @@
-import { User } from "../models/user.model";
+import { User } from "../../shared/models/user.model";
 import { HttpErrorResponse } from "@angular/common/http";
 
 export interface AuthState {

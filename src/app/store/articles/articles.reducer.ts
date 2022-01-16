@@ -27,8 +27,8 @@ const reducer = createReducer(
       list
     };
   }),
-  on(ArticlesActions.deleteArticleSuccess, (state, { article }) => {
-    const list = cloneDeep(state.list).filter((el) => el._id !== article._id);
+  on(ArticlesActions.deleteArticleSuccess, (state, { id }) => {
+    const list = cloneDeep(state.list).filter((el) => el._id !== id);
     return {
       ...state,
       list

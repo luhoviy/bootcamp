@@ -11,7 +11,7 @@ import { updateLoadingState } from "../../store";
 import { Toast } from "../../shared/services/toaster.model";
 import { Router } from "@angular/router";
 import { isEmpty } from "lodash";
-import { AuthResponse } from "../models/auth.model";
+import { AuthResponse } from "../../shared/models/auth.model";
 
 @Injectable()
 export class AuthEffects {

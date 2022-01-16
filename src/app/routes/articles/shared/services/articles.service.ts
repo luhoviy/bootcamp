@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Observable } from "rxjs";
-import { Article } from "../models/article.model";
+import { Article, BaseArticle } from "../../../../shared/models/article.model";
 
 @Injectable({
   providedIn: "root"
@@ -15,12 +15,12 @@ export class ArticlesService {
     return this.http.get<Article[]>(this.API_URL);
   }
 
-  create(article: Article): Observable<Article> {
+  create(article: BaseArticle): Observable<Article> {
     return this.http.post<Article>(this.API_URL, article);
   }
 
-  deleteOne(id: string): Observable<Article> {
-    return this.http.delete<Article>(`${this.API_URL}/${id}`);
+  deleteOne(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.API_URL}/${id}`);
   }
 
   toggleArticleLike(like: boolean, queryParams: { articleID: string; userID: string }): Observable<Article> {

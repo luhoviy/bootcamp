@@ -5,9 +5,9 @@ import {
   Input,
   OnInit,
   Output,
-  ViewChild,
+  ViewChild
 } from "@angular/core";
-import { Article } from "../../models/article.model";
+import { Article, BaseArticle } from "../../../../../shared/models/article.model";
 import { FormBuilder, FormGroup, NgForm, Validators } from "@angular/forms";
 import { isEmpty } from "lodash";
 
@@ -15,7 +15,7 @@ import { isEmpty } from "lodash";
   selector: "app-article-form",
   templateUrl: "./article-form.component.html",
   styleUrls: ["./article-form.component.scss"],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ArticleFormComponent implements OnInit {
   @ViewChild("formDirective") formDirective: NgForm;
@@ -38,14 +38,11 @@ export class ArticleFormComponent implements OnInit {
 
   private initForm(): void {
     this.form = this.fb.group({
-      title: [
-        this._article ? this._article.title : "",
-        [Validators.required, Validators.minLength(2)],
-      ],
+      title: [this._article ? this._article.title : "", [Validators.required, Validators.minLength(2)]],
       description: [
         this._article ? this._article.description : "",
-        [Validators.required, Validators.minLength(10)],
-      ],
+        [Validators.required, Validators.minLength(10)]
+      ]
     });
   }
 
@@ -53,7 +50,7 @@ export class ArticleFormComponent implements OnInit {
     const { title, description } = this.form.value;
     const article: Article = this.isEditMode
       ? { ...this._article, ...this.form.value }
-      : new Article(title, description);
+      : new BaseArticle(title, description);
     this.onSubmit.emit(article);
   }
 }

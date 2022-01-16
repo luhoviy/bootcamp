@@ -11,7 +11,7 @@ import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { HttpClientModule } from "@angular/common/http";
 import { LoadingBarRouterModule } from "@ngx-loading-bar/router";
 import { MatDialogModule } from "@angular/material/dialog";
-import { ConfirmationDialogComponent } from "./confirmation-dialog/confirmation-dialog.component";
+import { ConfirmationDialogComponent } from "./components/confirmation-dialog/confirmation-dialog.component";
 import { StopPropagationDirective } from "./directives/stop-propagation.directive";
 
 @NgModule({

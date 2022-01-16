@@ -9,8 +9,8 @@ import * as ArticleActions from "./articles.actions";
 import { Toast } from "../../shared/services/toaster.model";
 import { ArticlesService } from "../../routes/articles/shared/services/articles.service";
 import { HttpErrorResponse } from "@angular/common/http";
-import { ConfirmationDialogService } from "../../shared/confirmation-dialog/confirmation-dialog.service";
-import { ConfirmDialogData } from "../../shared/confirmation-dialog/confirmation-dialog.model";
+import { ConfirmationDialogService } from "../../shared/components/confirmation-dialog/confirmation-dialog.service";
+import { ConfirmDialogData } from "../../shared/components/confirmation-dialog/confirmation-dialog.model";
 import { getCurrentUser } from "../../authentication/store";
 
 @Injectable()
@@ -59,7 +59,7 @@ export class ArticlesEffects {
           switchMap(() => {
             return this.articleService.deleteOne(id).pipe(
               take(1),
-              map((article) => ArticleActions.deleteArticleSuccess({ article })),
+              map(() => ArticleActions.deleteArticleSuccess({ id })),
               catchError((error: HttpErrorResponse) => {
                 this.toaster.present(Toast.buildHttpErrorToast(error));
                 return of(ArticleActions.deleteArticleFailure({ error }));

@@ -1,4 +1,4 @@
-import { Article } from "../../routes/articles/shared/models/article.model";
+import { Article } from "../../shared/models/article.model";
 import { HttpErrorResponse } from "@angular/common/http";
 
 export interface ArticlesState {

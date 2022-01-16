@@ -1,5 +1,5 @@
 import { createAction, props } from "@ngrx/store";
-import { AuthResponse, LoginCredentials, SignUpInfo } from "../models/auth.model";
+import { AuthResponse, LoginCredentials, SignUpInfo } from "../../shared/models/auth.model";
 import { HttpErrorResponse } from "@angular/common/http";
 
 export const LOGIN = "LOGIN";

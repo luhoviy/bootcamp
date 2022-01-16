@@ -2,11 +2,11 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from "@
 import { Store } from "@ngrx/store";
 import { deleteArticle, getArticlesList, toggleArticleLike } from "../../store";
 import { map, takeUntil, withLatestFrom } from "rxjs";
-import { Article } from "../articles/shared/models/article.model";
+import { Article } from "../../shared/models/article.model";
 import { ClearObservable } from "../../shared/components/clear-observable";
 import { cloneDeep, orderBy } from "lodash";
 import { getCurrentUser } from "../../authentication/store";
-import { User } from "../../authentication/models/user.model";
+import { User } from "../../shared/models/user.model";
 import { BreakpointObserver } from "@angular/cdk/layout";
 
 @Component({

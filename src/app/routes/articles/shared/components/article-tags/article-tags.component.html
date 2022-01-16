@@ -1,0 +1,12 @@
+<ng-container *ngIf="tagChips.length">
+  <mat-chip-list [selectable]="false" aria-label="Article Tags">
+    <mat-chip
+      selected
+      [selectable]="false"
+      *ngFor="let chip of tagChips"
+      [color]="chip.color"
+    >
+      {{ chip.text }}
+    </mat-chip>
+  </mat-chip-list>
+</ng-container>

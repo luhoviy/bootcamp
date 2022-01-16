@@ -21,9 +21,6 @@ class ArticlesService {
       {
         path: "author",
         select: { password: 0 }
-      },
-      {
-        path: "tags"
       }
     ];
   }
@@ -50,16 +47,37 @@ class ArticlesService {
   }
 
   async getOne(_id: string): Promise<ArticleDTO> {
-    return ArticlesService.populateArticleQuery(ArticleModel.find({ _id }));
+    return ArticlesService.populateArticleQuery(ArticleModel.findOne({ _id }));
   }
 
   async create(article: ArticleDTO, user: UserJwtPayload): Promise<ArticleDTO> {
-    if (isEmpty(article)) {
-      throw InternalError.BadRequest("Article data is missing in request body.");
+    if (!isEmpty(article.tags)) {
+      article.tags = await TagsService.validateTags(article.tags);
     }
 
     article.author = user._id;
     return ArticleModel.create(article);
+  }
+
+  async update(_id: string, articlePayload: ArticleDTO, user: UserJwtPayload): Promise<ArticleDTO> {
+    const article = await ArticleModel.findOne({ _id });
+
+    if (isEmpty(article)) {
+      throw InternalError.NotFound(`Article with id ${_id} not found`);
+    }
+
+    if (String(article.author) !== user._id && !isAdmin(user)) {
+      throw InternalError.Forbidden("Access denied. User can modify only posts created by himself.");
+    }
+
+    if (!isEmpty(article.tags)) {
+      article.tags = await TagsService.validateTags(article.tags);
+    }
+
+    article.title = articlePayload.title;
+    article.description = articlePayload.description;
+    await article.save();
+    return new ArticleDTO(article);
   }
 
   async deleteOne(_id: string): Promise<void> {
@@ -97,55 +115,6 @@ class ArticlesService {
       {
         $addToSet: {
           comments: commentID
-        }
-      },
-      { new: true, populate: ArticlesService.buildArticlePopulateOptions() }
-    );
-  }
-
-  async addTag(articleID: string, tag: string, user: UserJwtPayload): Promise<ArticleDTO> {
-    const article = await this.getOne(articleID);
-    if (isEmpty(article)) {
-      throw InternalError.NotFound(`Article with id ${articleID} not found`);
-    }
-
-    if (String(article.author) !== user._id && !isAdmin(user)) {
-      throw InternalError.Forbidden("Access denied. User can add tags only to posts created by himself.");
-    }
-
-    const desiredTag = await TagsService.getOne(tag);
-    if (!desiredTag) {
-      throw InternalError.NotFound(`Tag '${tag}' not found`);
-    }
-
-    return ArticleModel.findByIdAndUpdate(
-      articleID,
-      {
-        $addToSet: {
-          tags: tag
-        }
-      },
-      { new: true, populate: ArticlesService.buildArticlePopulateOptions() }
-    );
-  }
-
-  async removeTag(articleID: string, tag: string, user: UserJwtPayload): Promise<ArticleDTO> {
-    const article = await this.getOne(articleID);
-    if (isEmpty(article)) {
-      throw InternalError.NotFound(`Article with id ${articleID} not found`);
-    }
-
-    if (String(article.author) !== user._id && !isAdmin(user)) {
-      throw InternalError.Forbidden(
-        "Access denied. User can remove tags only from posts created by himself."
-      );
-    }
-
-    return ArticleModel.findByIdAndUpdate(
-      articleID,
-      {
-        $pull: {
-          tags: tag
         }
       },
       { new: true, populate: ArticlesService.buildArticlePopulateOptions() }

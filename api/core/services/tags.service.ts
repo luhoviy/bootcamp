@@ -34,6 +34,17 @@ class TagService {
     await tag.save();
     return new TagDto(tag);
   }
+
+  async validateTags(tags: string[]): Promise<string[]> {
+    try {
+      const foundTags = await TagModel.find({
+        text: { $in: tags }
+      });
+      return foundTags.map((tag) => tag.text);
+    } catch (e) {
+      return [];
+    }
+  }
 }
 
 export default new TagService();

@@ -35,6 +35,10 @@ export class RequestBodyValidator {
       RequestBodyValidator.validateByMinLength("firstName", 2)
     ];
   }
+
+  static buildArticleValidators(): ValidationChain[] {
+    return [RequestBodyValidator.notEmpty("title"), RequestBodyValidator.notEmpty("description")];
+  }
 }
 
 export function validateRequestBody(

@@ -1,19 +1,34 @@
 import express from "express";
 import articlesService from "../services/articles.service";
 import { StatusCode } from "../common/enums";
+import { UserJwtPayload } from "../dto/user.dto";
+import { InternalError } from "../common/error-handler";
 
 class ArticlesController {
   async getAll(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
     try {
-      res.json(await articlesService.getAll());
+      const list = await articlesService.getAll(req.query);
+      res.json(list);
     } catch (error) {
       next(error);
     }
   }
 
-  async create(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+  async getOne(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+    const { id } = req.params;
     try {
-      res.status(StatusCode.CREATED).json(await articlesService.create(req.body));
+      const article = await articlesService.getOne(id);
+      res.json(article);
+    } catch (error) {
+      next(InternalError.NotFound(`Article with id ${id} not found`));
+    }
+  }
+
+  async create(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+    const user: UserJwtPayload = req["user"];
+    try {
+      const article = await articlesService.create(req.body, user);
+      res.status(StatusCode.CREATED).json(article);
     } catch (error) {
       next(error);
     }
@@ -22,7 +37,8 @@ class ArticlesController {
   async deleteOne(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
     const { id } = req.params;
     try {
-      res.json(await articlesService.deleteOne(id));
+      await articlesService.deleteOne(id);
+      res.sendStatus(StatusCode.NO_CONTENT);
     } catch (error) {
       next(error);
     }
@@ -30,7 +46,10 @@ class ArticlesController {
 
   async likeArticle(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
     try {
-      res.json(await articlesService.likeArticle(req.query as any));
+      const { articleID } = req.query;
+      const user: UserJwtPayload = req["user"];
+      const response = await articlesService.likeArticle(articleID as string, user);
+      res.json(response);
     } catch (error) {
       next(error);
     }
@@ -42,7 +61,34 @@ class ArticlesController {
     next: express.NextFunction
   ): Promise<void> {
     try {
-      res.json(await articlesService.dislikeArticle(req.query as any));
+      const { articleID } = req.query;
+      const user: UserJwtPayload = req["user"];
+      const response = await articlesService.dislikeArticle(articleID as string, user);
+      res.json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async addTag(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+    try {
+      const user: UserJwtPayload = req["user"];
+      const { id } = req.params;
+      const { tag } = req.query;
+      const response = await articlesService.addTag(id, tag as string, user);
+      res.json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async removeTag(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+    try {
+      const user: UserJwtPayload = req["user"];
+      const { id } = req.params;
+      const { tag } = req.query;
+      await articlesService.removeTag(id, tag as string, user);
+      res.sendStatus(StatusCode.NO_CONTENT);
     } catch (error) {
       next(error);
     }

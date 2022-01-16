@@ -4,7 +4,7 @@ import { InternalError } from "../common/error-handler";
 import { Role, StatusCode } from "../common/enums";
 import { compare, hash } from "bcrypt";
 import TokenService from "./token.service";
-import { AuthResponse } from "../common/interfaces";
+import { AuthResponse } from "../common/models";
 import { isEmpty } from "lodash";
 import { RoleModel } from "../models/role.model";
 

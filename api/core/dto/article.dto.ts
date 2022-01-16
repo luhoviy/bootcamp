@@ -1,12 +1,14 @@
-import { UserDTO } from "./user.dto";
+import { Schema } from "mongoose";
 
 export class ArticleDTO {
   _id: string;
   title: string;
   description: string;
-  createdAt: number;
+  createdAt: string;
   likes: string[];
-  author: UserDTO;
+  comments: string[];
+  tags: string[];
+  author: string | Schema.Types.ObjectId;
 
   constructor(article: ArticleDTO) {
     this._id = article._id;
@@ -14,6 +16,8 @@ export class ArticleDTO {
     this.description = article.description;
     this.createdAt = article.createdAt;
     this.likes = article.likes;
+    this.comments = article.comments;
+    this.tags = article.tags;
     this.author = article.author;
   }
 }

@@ -4,7 +4,8 @@ import UsersService from "../services/users.service";
 class UsersController {
   async getAll(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
     try {
-      res.json(await UsersService.getAll());
+      const users = await UsersService.getAll();
+      res.json(users);
     } catch (error) {
       next(error);
     }

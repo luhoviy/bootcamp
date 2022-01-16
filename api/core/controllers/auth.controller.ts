@@ -1,18 +1,11 @@
 import express from "express";
 import authService from "../services/auth.service";
-import { validationResult } from "express-validator";
 import { StatusCode } from "../common/enums";
-import { handleInvalidBodyRequest } from "../common/error-handler";
 import { transformDaysToMilliseconds } from "../common/utils";
 
 class AuthController {
   async signup(req: express.Request, res: express.Response, next: express.NextFunction) {
     try {
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        handleInvalidBodyRequest(res, errors);
-        return;
-      }
       const userData = await authService.signup(req.body);
       res.cookie("refreshToken", userData.refreshToken, {
         maxAge: transformDaysToMilliseconds(30),
@@ -26,11 +19,6 @@ class AuthController {
 
   async login(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
     try {
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        handleInvalidBodyRequest(res, errors);
-        return;
-      }
       const { email, password } = req.body;
       const userData = await authService.login(email, password);
       res.cookie("refreshToken", userData.refreshToken, {

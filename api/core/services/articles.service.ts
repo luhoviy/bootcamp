@@ -2,68 +2,144 @@ import { ArticleDTO } from "../dto/article.dto";
 import { ArticleModel } from "../models/article.model";
 import { isEmpty } from "lodash";
 import { InternalError } from "../common/error-handler";
-import { Role, StatusCode } from "../common/enums";
+import { UserJwtPayload } from "../dto/user.dto";
+import { Query } from "mongoose";
+import QueryString from "qs";
+import { QueryParamsParser } from "../common/query-params-parser";
+import { DatabaseQueryBuilder } from "../common/database.query-builder";
+import { SortOptions } from "../common/models";
+import TagsService from "./tags.service";
+import { isAdmin } from "../common/utils";
 
 class ArticlesService {
-  async getAll(): Promise<ArticleDTO[]> {
-    return ArticleModel.find();
+  private static populateArticleQuery(query: Query<any, any>) {
+    return query
+      .populate({
+        path: "comments",
+        populate: { path: "author", select: { password: 0 } }
+      })
+      .populate("author", { password: 0 })
+      .populate("tags");
   }
 
-  async create(article: ArticleDTO): Promise<ArticleDTO> {
+  async getAll(queryParams: QueryString.ParsedQs): Promise<ArticleDTO[]> {
+    let query = ArticleModel.find();
+    query = DatabaseQueryBuilder.buildQueryBySearchText(
+      query,
+      QueryParamsParser.parse(queryParams, "search", false),
+      ["title", "description"]
+    );
+    const defaultSortOptions = new SortOptions();
+    const sortOptions = QueryParamsParser.parseSortParam(queryParams) || defaultSortOptions;
+    query = DatabaseQueryBuilder.buildSortQuery(query, sortOptions);
+    query = DatabaseQueryBuilder.setQueryIntersection(query, QueryParamsParser.parse(queryParams, "tags"));
+    query = DatabaseQueryBuilder.setQueryPagination(query, QueryParamsParser.parse(queryParams, "skip"));
+    query = DatabaseQueryBuilder.setQueryPagination(query, QueryParamsParser.parse(queryParams, "limit"));
+
+    return ArticlesService.populateArticleQuery(query);
+  }
+
+  async getOne(_id: string): Promise<ArticleDTO> {
+    return ArticlesService.populateArticleQuery(ArticleModel.find({ _id }));
+  }
+
+  async create(article: ArticleDTO, user: UserJwtPayload): Promise<ArticleDTO> {
     if (isEmpty(article)) {
       throw InternalError.BadRequest("Article data is missing in request body.");
     }
 
-    // temporary mocked user
-    article.author = {
-      firstName: "John",
-      email: "john.doe@mail.com",
-      lastName: "Doe",
-      _id: "666",
-      displayName: "John Doe",
-      roles: [Role.USER]
-    };
-
+    article.author = user._id;
     return ArticleModel.create(article);
   }
 
-  async deleteOne(id: string): Promise<ArticleDTO> {
-    return ArticleModel.findByIdAndDelete(id);
+  async deleteOne(_id: string): Promise<void> {
+    await ArticleModel.deleteOne({ _id });
+    return;
   }
 
-  async likeArticle(params: { articleID: string; userID: string }): Promise<ArticleDTO> {
-    ArticlesService.validateQueryParams(params);
+  async likeArticle(articleID: string, user: UserJwtPayload): Promise<ArticleDTO> {
     return ArticleModel.findByIdAndUpdate(
-      params.articleID,
+      articleID,
       {
         $addToSet: {
-          likes: params.userID
+          likes: user._id
         }
       },
       { new: true }
     );
   }
 
-  async dislikeArticle(params: { articleID: string; userID: string }): Promise<ArticleDTO> {
-    ArticlesService.validateQueryParams(params);
+  async dislikeArticle(articleID: string, user: UserJwtPayload): Promise<ArticleDTO> {
     return ArticleModel.findByIdAndUpdate(
-      params.articleID,
+      articleID,
       {
         $pull: {
-          likes: params.userID
+          likes: user._id
         }
       },
       { new: true }
     );
   }
 
-  private static validateQueryParams(params: { articleID: string; userID: string }) {
-    if (isEmpty(params) || isEmpty(params.articleID) || isEmpty(params.userID)) {
-      throw new InternalError(
-        "Invalid request. Required params articleID or userID are missing.",
-        StatusCode.BAD_REQUEST
+  async addComment(articleID: string, commentID: string): Promise<ArticleDTO> {
+    return ArticleModel.findByIdAndUpdate(
+      articleID,
+      {
+        $addToSet: {
+          comments: commentID
+        }
+      },
+      { new: true }
+    );
+  }
+
+  async addTag(articleID: string, tag: string, user: UserJwtPayload): Promise<ArticleDTO> {
+    const article = await this.getOne(articleID);
+    if (isEmpty(article)) {
+      throw InternalError.NotFound(`Article with id ${articleID} not found`);
+    }
+
+    if (String(article.author) !== user._id && !isAdmin(user)) {
+      throw InternalError.Forbidden("Access denied. User can add tags only to posts created by himself.");
+    }
+
+    const desiredTag = await TagsService.getOne(tag);
+    if (!desiredTag) {
+      throw InternalError.NotFound(`Tag '${tag}' not found`);
+    }
+
+    return ArticleModel.findByIdAndUpdate(
+      articleID,
+      {
+        $addToSet: {
+          tags: tag
+        }
+      },
+      { new: true }
+    );
+  }
+
+  async removeTag(articleID: string, tag: string, user: UserJwtPayload): Promise<void> {
+    const article = await this.getOne(articleID);
+    if (isEmpty(article)) {
+      throw InternalError.NotFound(`Article with id ${articleID} not found`);
+    }
+
+    if (String(article.author) !== user._id && !isAdmin(user)) {
+      throw InternalError.Forbidden(
+        "Access denied. User can remove tags only from posts created by himself."
       );
     }
+
+    await ArticleModel.updateOne(
+      { _id: articleID },
+      {
+        $pull: {
+          tags: tag
+        }
+      }
+    );
+    return;
   }
 }
 

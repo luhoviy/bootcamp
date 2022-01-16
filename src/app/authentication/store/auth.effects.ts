@@ -94,7 +94,7 @@ export class AuthEffects {
         ofType(AuthActions.extractAuthData),
         tap(() => {
           try {
-            let stringData = localStorage.getItem("auth");
+            const stringData = localStorage.getItem("auth");
             if (!isEmpty(stringData)) {
               const authData: AuthResponse = JSON.parse(stringData);
               this.store.dispatch(loginSuccess({ authResponse: authData }));

@@ -6,7 +6,7 @@ import { tap } from "rxjs/operators";
 import { updateLoadingState } from "../app.actions";
 import { ToasterService } from "../../shared/services/toaster.service";
 import * as ArticleActions from "./articles.actions";
-import { Toast } from "../../shared/services/toaster.model";
+import { Toast } from "../../shared/models/toaster.model";
 import { ArticlesService } from "../../routes/articles/shared/services/articles.service";
 import { HttpErrorResponse } from "@angular/common/http";
 import { ConfirmationDialogService } from "../../shared/components/confirmation-dialog/confirmation-dialog.service";

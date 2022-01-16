@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
-import { Tag } from "../../../../../shared/models/tag.model";
 import { ThemePalette } from "@angular/material/core";
 import { sample } from "lodash";
 import { ThemeColors } from "../../../../../shared/consts";
@@ -18,9 +17,9 @@ interface TagChip {
 export class ArticleTagsComponent {
   tagChips: TagChip[] = [];
 
-  @Input() set tags(data: Tag[]) {
+  @Input() set tags(data: string[]) {
     this.tagChips = data.map((tag) => ({
-      text: tag.text,
+      text: tag,
       color: sample(ThemeColors)
     }));
   }

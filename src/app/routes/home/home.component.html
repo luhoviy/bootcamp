@@ -94,8 +94,8 @@
 
             <div class="divider mt-1 mb-1"></div>
 
-            <ng-container *ngIf="!article.tags.length">
-              <app-article-tags></app-article-tags>
+            <ng-container *ngIf="article.tags.length">
+              <app-article-tags [tags]="article.tags"></app-article-tags>
               <div class="divider mt-1 mb-1"></div>
             </ng-container>
 

@@ -8,7 +8,7 @@ import { catchError, of, switchMap, take } from "rxjs";
 import { AuthService } from "../services/auth.service";
 import { finalize, map, tap } from "rxjs/operators";
 import { updateLoadingState } from "../../store";
-import { Toast } from "../../shared/services/toaster.model";
+import { Toast } from "../../shared/models/toaster.model";
 import { Router } from "@angular/router";
 import { isEmpty } from "lodash";
 import { AuthResponse } from "../../shared/models/auth.model";

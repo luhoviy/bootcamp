@@ -87,8 +87,8 @@ class ArticlesController {
       const user: UserJwtPayload = req["user"];
       const { id } = req.params;
       const { tag } = req.query;
-      await articlesService.removeTag(id, tag as string, user);
-      res.sendStatus(StatusCode.NO_CONTENT);
+      const response = await articlesService.addTag(id, tag as string, user);
+      res.json(response);
     } catch (error) {
       next(error);
     }

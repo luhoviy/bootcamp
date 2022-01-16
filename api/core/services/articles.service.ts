@@ -3,7 +3,7 @@ import { ArticleModel } from "../models/article.model";
 import { isEmpty } from "lodash";
 import { InternalError } from "../common/error-handler";
 import { UserJwtPayload } from "../dto/user.dto";
-import { Query } from "mongoose";
+import { PopulateOptions, Query } from "mongoose";
 import QueryString from "qs";
 import { QueryParamsParser } from "../common/query-params-parser";
 import { DatabaseQueryBuilder } from "../common/database.query-builder";
@@ -12,14 +12,24 @@ import TagsService from "./tags.service";
 import { isAdmin } from "../common/utils";
 
 class ArticlesService {
-  private static populateArticleQuery(query: Query<any, any>) {
-    return query
-      .populate({
+  private static buildArticlePopulateOptions(): PopulateOptions[] {
+    return [
+      {
         path: "comments",
         populate: { path: "author", select: { password: 0 } }
-      })
-      .populate("author", { password: 0 })
-      .populate("tags");
+      },
+      {
+        path: "author",
+        select: { password: 0 }
+      },
+      {
+        path: "tags"
+      }
+    ];
+  }
+
+  private static populateArticleQuery(query: Query<any, any>) {
+    return query.populate(ArticlesService.buildArticlePopulateOptions());
   }
 
   async getAll(queryParams: QueryString.ParsedQs): Promise<ArticleDTO[]> {
@@ -65,7 +75,7 @@ class ArticlesService {
           likes: user._id
         }
       },
-      { new: true }
+      { new: true, populate: ArticlesService.buildArticlePopulateOptions() }
     );
   }
 
@@ -77,7 +87,7 @@ class ArticlesService {
           likes: user._id
         }
       },
-      { new: true }
+      { new: true, populate: ArticlesService.buildArticlePopulateOptions() }
     );
   }
 
@@ -89,7 +99,7 @@ class ArticlesService {
           comments: commentID
         }
       },
-      { new: true }
+      { new: true, populate: ArticlesService.buildArticlePopulateOptions() }
     );
   }
 
@@ -115,11 +125,11 @@ class ArticlesService {
           tags: tag
         }
       },
-      { new: true }
+      { new: true, populate: ArticlesService.buildArticlePopulateOptions() }
     );
   }
 
-  async removeTag(articleID: string, tag: string, user: UserJwtPayload): Promise<void> {
+  async removeTag(articleID: string, tag: string, user: UserJwtPayload): Promise<ArticleDTO> {
     const article = await this.getOne(articleID);
     if (isEmpty(article)) {
       throw InternalError.NotFound(`Article with id ${articleID} not found`);
@@ -131,15 +141,15 @@ class ArticlesService {
       );
     }
 
-    await ArticleModel.updateOne(
-      { _id: articleID },
+    return ArticleModel.findByIdAndUpdate(
+      articleID,
       {
         $pull: {
           tags: tag
         }
-      }
+      },
+      { new: true, populate: ArticlesService.buildArticlePopulateOptions() }
     );
-    return;
   }
 }
 

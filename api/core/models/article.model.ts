@@ -7,7 +7,7 @@ const schema = new Schema<ArticleDTO>(
     description: { type: String, required: true },
     likes: [{ type: Schema.Types.ObjectId, ref: "users" }],
     comments: [{ type: Schema.Types.ObjectId, ref: "comments" }],
-    tags: [{ type: String, unique: true, trim: true }],
+    tags: [{ type: String, trim: true }],
     author: { type: Schema.Types.ObjectId, ref: "users" }
   },
   { timestamps: { createdAt: true } }

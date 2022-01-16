@@ -70,8 +70,8 @@ class ArticlesService {
       throw InternalError.Forbidden("Access denied. User can modify only posts created by himself.");
     }
 
-    if (!isEmpty(article.tags)) {
-      article.tags = await TagsService.validateTags(article.tags);
+    if (Array.isArray(articlePayload.tags)) {
+      article.tags = await TagsService.validateTags(articlePayload.tags);
     }
 
     article.title = articlePayload.title;

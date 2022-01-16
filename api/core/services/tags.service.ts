@@ -36,6 +36,9 @@ class TagService {
   }
 
   async validateTags(tags: string[]): Promise<string[]> {
+    if (isEmpty(tags)) {
+      return [];
+    }
     try {
       const foundTags = await TagModel.find({
         text: { $in: tags }

@@ -3,6 +3,7 @@ import express from "express";
 import { StatusCode } from "../common/enums";
 import { InternalError } from "../common/error-handler";
 import { isEmpty } from "lodash";
+import { RequestHandlerParams } from "express-serve-static-core";
 
 export class RequestBodyValidator {
   static validateByMinLength(fieldName: string, min: number): ValidationChain {
@@ -29,15 +30,24 @@ export class RequestBodyValidator {
     ];
   }
 
-  static buildSignUpValidators(): ValidationChain[] {
+  static buildSignUpValidators(): RequestHandlerParams {
     return [
       ...RequestBodyValidator.buildCredentialsValidators(),
-      RequestBodyValidator.validateByMinLength("firstName", 2)
+      RequestBodyValidator.validateByMinLength("firstName", 2),
+      validateRequestBody
     ];
   }
 
-  static buildArticleValidators(): ValidationChain[] {
-    return [RequestBodyValidator.notEmpty("title"), RequestBodyValidator.notEmpty("description")];
+  static buildArticleValidators(): RequestHandlerParams {
+    return [
+      RequestBodyValidator.notEmpty("title"),
+      RequestBodyValidator.notEmpty("description"),
+      RequestBodyValidator.validateByMinLength("title", 2),
+      RequestBodyValidator.validateByMinLength("description", 10),
+      RequestBodyValidator.validateByMaxLength("title", 50),
+      RequestBodyValidator.validateByMaxLength("description", 3000),
+      validateRequestBody
+    ];
   }
 }
 

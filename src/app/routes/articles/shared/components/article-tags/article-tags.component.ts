@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
 import { ThemePalette } from "@angular/material/core";
-import { sample } from "lodash";
-import { ThemeColors } from "../../../../../shared/consts";
+import { TagsService } from "../../../../../shared/services/tags.service";
 
 interface TagChip {
   text: string;
@@ -17,10 +16,12 @@ interface TagChip {
 export class ArticleTagsComponent {
   tagChips: TagChip[] = [];
 
+  constructor(private tagService: TagsService) {}
+
   @Input() set tags(data: string[]) {
     this.tagChips = data.map((tag) => ({
       text: tag,
-      color: sample(ThemeColors)
+      color: this.tagService.defineTagColor(tag)
     }));
   }
 }

@@ -5,6 +5,7 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { ArticleFormComponent } from "./article-form.component";
 import { SharedModule } from "../../../../../shared/shared.module";
+import { MatSelectModule } from "@angular/material/select";
 
 @NgModule({
   declarations: [ArticleFormComponent],
@@ -16,6 +17,7 @@ import { SharedModule } from "../../../../../shared/shared.module";
     MatFormFieldModule,
     MatInputModule,
     SharedModule,
-  ],
+    MatSelectModule
+  ]
 })
 export class ArticleFormModule {}

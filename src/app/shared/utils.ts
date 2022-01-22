@@ -1,4 +1,7 @@
 import { FormGroup } from "@angular/forms";
+import { ThemePalette } from "@angular/material/core";
+import { sample } from "lodash";
+import { ThemeColors } from "./consts";
 
 export const matchPasswordsValidator = (
   newPasswordControlName: string,
@@ -14,4 +17,8 @@ export const matchPasswordsValidator = (
     }
     matchingControl.setErrors(null);
   };
+};
+
+export const getRandomThemeColor = (): ThemePalette => {
+  return sample(ThemeColors);
 };

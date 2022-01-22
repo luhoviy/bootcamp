@@ -18,9 +18,7 @@
       maxlength="50"
       #titleInput
     />
-    <mat-hint align="end"
-      >{{ titleInput.value?.length || 0 }} / 50
-    </mat-hint>
+    <mat-hint align="end">{{ titleInput.value?.length || 0 }} / 50 </mat-hint>
 
     <mat-error *ngIf="form.get('title').hasError('required')">
       This field is required
@@ -45,9 +43,7 @@
       #descriptionInput
     >
     </textarea>
-    <mat-hint align="end"
-      >{{ descriptionInput.value?.length || 0 }} / 3000
-    </mat-hint>
+    <mat-hint align="end">{{ descriptionInput.value?.length || 0 }} / 3000 </mat-hint>
 
     <mat-error *ngIf="form.get('description').hasError('required')">
       This field is required
@@ -57,6 +53,22 @@
       Article description should contain at least 10 symbols
     </mat-error>
   </mat-form-field>
+
+  <ng-container *ngIf="tagList.length">
+    <mat-form-field appearance="fill">
+      <mat-label>Add Tags</mat-label>
+      <mat-select formControlName="tags" multiple>
+        <mat-select-trigger>
+          {{ form.get("tags").value ? form.get("tags").value[0] : "" }}
+          <span *ngIf="form.get('tags').value?.length > 1" class="tags-additional-value">
+            (+{{ form.get("tags").value.length - 1 }}
+            {{ form.get("tags").value?.length === 2 ? "other" : "others" }})
+          </span>
+        </mat-select-trigger>
+        <mat-option *ngFor="let tag of tagList" [value]="tag">{{ tag }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </ng-container>
 
   <div fxLayoutAlign="end center">
     <button

@@ -10,6 +10,9 @@ import {
 import { Article, BaseArticle } from "../../../../../shared/models/article.model";
 import { FormBuilder, FormGroup, NgForm, Validators } from "@angular/forms";
 import { isEmpty } from "lodash";
+import { Store } from "@ngrx/store";
+import { getTagsList } from "../../../../../store";
+import { map, take } from "rxjs";
 
 @Component({
   selector: "app-article-form",
@@ -29,10 +32,12 @@ export class ArticleFormComponent implements OnInit {
   _article: Article;
   isEditMode = false;
   form: FormGroup;
+  tagList: string[] = [];
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private store: Store) {}
 
   ngOnInit(): void {
+    this.getTags();
     this.initForm();
   }
 
@@ -44,13 +49,26 @@ export class ArticleFormComponent implements OnInit {
         [Validators.required, Validators.minLength(10)]
       ]
     });
+
+    if (this.tagList.length) {
+      this.form.addControl("tags", this.fb.control([this._article ? this._article.tags : []]));
+    }
+  }
+
+  private getTags(): void {
+    this.store
+      .select(getTagsList)
+      .pipe(
+        take(1),
+        map((list) => list.map((tag) => tag.text))
+      )
+      .subscribe((list) => (this.tagList = list));
   }
 
   submit(): void {
-    const { title, description } = this.form.value;
     const article: Article = this.isEditMode
       ? { ...this._article, ...this.form.value }
-      : new BaseArticle(title, description);
+      : new BaseArticle(this.form.value);
     this.onSubmit.emit(article);
   }
 }

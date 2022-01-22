@@ -1,6 +1,7 @@
 import { createAction, props } from "@ngrx/store";
 import { Article, BaseArticle } from "../../shared/models/article.model";
 import { HttpErrorResponse } from "@angular/common/http";
+import { Tag } from "../../shared/models/tag.model";
 
 export const GET_ARTICLES = "GET_ARTICLES";
 export const GET_ARTICLES_SUCCESS = "GET_ARTICLES_SUCCESS";
@@ -51,3 +52,11 @@ export const toggleArticleLikeFailure = createAction(
   TOGGLE_ARTICLE_LIKE_FAILURE,
   props<{ error: HttpErrorResponse }>()
 );
+
+export const GET_TAGS = "GET_TAGS";
+export const GET_TAGS_SUCCESS = "GET_TAGS_SUCCESS";
+export const GET_TAGS_FAILURE = "GET_TAGS_FAILURE";
+
+export const getTags = createAction(GET_TAGS);
+export const getTagsSuccess = createAction(GET_TAGS_SUCCESS, props<{ tags: Tag[] }>());
+export const getTagsFailure = createAction(GET_TAGS_FAILURE, props<{ error: HttpErrorResponse }>());

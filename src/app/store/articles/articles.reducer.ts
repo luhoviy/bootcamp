@@ -2,6 +2,7 @@ import { Action, createReducer, on } from "@ngrx/store";
 import { ArticlesInitialState, ArticlesState } from "./articles.state";
 import * as ArticlesActions from "./articles.actions";
 import { cloneDeep } from "lodash";
+import { Tag } from "../../shared/models/tag.model";
 
 const reducer = createReducer(
   ArticlesInitialState,
@@ -34,12 +35,29 @@ const reducer = createReducer(
       list
     };
   }),
-  on(ArticlesActions.getArticlesFailure, ArticlesActions.createArticleFailure, (state, { error }) => {
+  on(ArticlesActions.getTagsSuccess, (state, { tags }) => {
     return {
       ...state,
-      error
+      tags: tags.map((tag) => new Tag(tag))
     };
-  })
+  }),
+  on(ArticlesActions.getTagsFailure, (state) => {
+    return {
+      ...state,
+      tags: []
+    };
+  }),
+  on(
+    ArticlesActions.getArticlesFailure,
+    ArticlesActions.createArticleFailure,
+    ArticlesActions.getTagsFailure,
+    (state, { error }) => {
+      return {
+        ...state,
+        error
+      };
+    }
+  )
 );
 
 export const ArticlesReducerFactory = (state: ArticlesState | undefined, action: Action) =>

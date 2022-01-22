@@ -6,6 +6,7 @@ import { MatSidenavModule } from "@angular/material/sidenav";
 import { SharedModule } from "../../shared/shared.module";
 import { HomeResolver } from "./resolvers/home.resolver";
 import { ArticleTagsModule } from "../articles/shared/components/article-tags/article-tags.module";
+import { TagsResolver } from "../articles/shared/resolvers/tags.resolver";
 
 @NgModule({
   declarations: [HomeComponent],
@@ -16,7 +17,8 @@ import { ArticleTagsModule } from "../articles/shared/components/article-tags/ar
         path: "",
         component: HomeComponent,
         resolve: {
-          home: HomeResolver
+          home: HomeResolver,
+          tags: TagsResolver
         }
       }
     ]),

@@ -46,9 +46,10 @@ class ArticlesController {
   }
 
   async deleteOne(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+    const user: UserJwtPayload = req["user"];
     const { id } = req.params;
     try {
-      await articlesService.deleteOne(id);
+      await articlesService.deleteOne(id, user);
       res.sendStatus(StatusCode.NO_CONTENT);
     } catch (error) {
       next(error);

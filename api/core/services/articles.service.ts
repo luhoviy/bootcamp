@@ -63,7 +63,7 @@ class ArticlesService {
     const article = await ArticleModel.findOne({ _id });
 
     if (isEmpty(article)) {
-      throw InternalError.NotFound(`Article with id ${_id} not found`);
+      throw InternalError.BadRequest(`Article with id ${_id} not found`);
     }
 
     if (String(article.author) !== user._id && !isAdmin(user)) {
@@ -80,7 +80,16 @@ class ArticlesService {
     return new ArticleDTO(article);
   }
 
-  async deleteOne(_id: string): Promise<void> {
+  async deleteOne(_id: string, user: UserJwtPayload): Promise<void> {
+    const article = await ArticleModel.findOne({ _id });
+
+    if (isEmpty(article)) {
+      throw InternalError.BadRequest(`Article with id ${_id} not found`);
+    }
+
+    if (String(article.author) !== user._id && !isAdmin(user)) {
+      throw InternalError.Forbidden("Forbidden. You can delete only your own posts");
+    }
     await ArticleModel.deleteOne({ _id });
     return;
   }

@@ -47,7 +47,11 @@ class ArticlesService {
   }
 
   async getOne(_id: string): Promise<ArticleDTO> {
-    return ArticlesService.populateArticleQuery(ArticleModel.findOne({ _id }));
+    const article = await ArticlesService.populateArticleQuery(ArticleModel.findOne({ _id }));
+    if (isEmpty(article)) {
+      throw InternalError.NotFound();
+    }
+    return new ArticleDTO(article);
   }
 
   async create(article: ArticleDTO, user: UserJwtPayload): Promise<ArticleDTO> {

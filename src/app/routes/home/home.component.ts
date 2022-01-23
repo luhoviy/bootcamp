@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from "@angular/core";
 import { Store } from "@ngrx/store";
-import { deleteArticle, getArticlesList, toggleArticleLike } from "../../store";
+import { getArticlesList } from "../../store";
 import { map, takeUntil, withLatestFrom } from "rxjs";
 import { Article } from "../../shared/models/article.model";
 import { ClearObservable } from "../../shared/components/clear-observable";
@@ -65,17 +65,5 @@ export class HomeComponent extends ClearObservable implements OnInit {
         this.articles = articles;
         this.cdr.markForCheck();
       });
-  }
-
-  toggleLikeStatement(article: Article): void {
-    const liked = (article.currentUserLiked = !article.currentUserLiked);
-    liked
-      ? article.likes.push(this.currentUser._id)
-      : (article.likes = article.likes.filter((id) => id !== this.currentUser._id));
-    this.store.dispatch(toggleArticleLike({ article: cloneDeep(article) }));
-  }
-
-  deleteArticle(article: Article): void {
-    this.store.dispatch(deleteArticle({ id: article._id }));
   }
 }

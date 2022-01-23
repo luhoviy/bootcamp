@@ -39,10 +39,6 @@
   color: $white;
 }
 
-::ng-deep .nav-menu .mat-menu-content {
-  padding: 0 !important;
-
-  .mat-menu-item.active {
-    background-color: rgba(0, 0, 0, 0.2);
-  }
+::ng-deep .mat-menu-item.active {
+  background-color: rgba(0, 0, 0, 0.2);
 }

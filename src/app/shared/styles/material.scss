@@ -36,11 +36,26 @@ input:-webkit-autofill:active {
 
 // override material styles
 
-.mat-drawer-container,
-.mat-drawer {
-  background-color: transparent;
-}
+:root {
+  .mat-drawer-container,
+  .mat-drawer {
+    background-color: transparent;
+  }
 
-.mat-drawer {
-  border: none !important;
+  .mat-drawer {
+    border: none !important;
+  }
+
+  .mat-menu-content {
+    padding: 0 !important;
+  }
+
+  .mat-button,
+  .mat-icon-button,
+  .mat-stroked-button,
+  .mat-flat-button {
+    &.mw-auto {
+      min-width: auto;
+    }
+  }
 }

@@ -9,10 +9,11 @@ import {
 } from "@angular/core";
 import { Article, BaseArticle } from "../../../../../shared/models/article.model";
 import { FormBuilder, FormGroup, NgForm, Validators } from "@angular/forms";
-import { isEmpty } from "lodash";
+import { isEmpty, isEqual, orderBy } from "lodash";
 import { Store } from "@ngrx/store";
 import { getTagsList } from "../../../../../store";
-import { map, take } from "rxjs";
+import { map, take, takeUntil } from "rxjs";
+import { ClearObservable } from "../../../../../shared/components/clear-observable";
 
 @Component({
   selector: "app-article-form",
@@ -20,21 +21,27 @@ import { map, take } from "rxjs";
   styleUrls: ["./article-form.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ArticleFormComponent implements OnInit {
+export class ArticleFormComponent extends ClearObservable implements OnInit {
   @ViewChild("formDirective") formDirective: NgForm;
   @Output() onSubmit = new EventEmitter<Article>();
 
   @Input() set article(data: Article) {
     this._article = data;
     this.isEditMode = !isEmpty(data);
+    if (this.form?.value) {
+      this.checkFormEquality();
+    }
   }
 
   _article: Article;
   isEditMode = false;
+  isEqualToOriginalArticle = true;
   form: FormGroup;
   tagList: string[] = [];
 
-  constructor(private fb: FormBuilder, private store: Store) {}
+  constructor(private fb: FormBuilder, private store: Store) {
+    super();
+  }
 
   ngOnInit(): void {
     this.getTags();
@@ -51,7 +58,11 @@ export class ArticleFormComponent implements OnInit {
     });
 
     if (this.tagList.length) {
-      this.form.addControl("tags", this.fb.control([this._article ? this._article.tags : []]));
+      this.form.addControl("tags", this.fb.control(this._article ? this._article.tags : []));
+    }
+
+    if (this.isEditMode) {
+      this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => this.checkFormEquality());
     }
   }
 
@@ -60,9 +71,14 @@ export class ArticleFormComponent implements OnInit {
       .select(getTagsList)
       .pipe(
         take(1),
-        map((list) => list.map((tag) => tag.text))
+        map((list) => list.map((tag) => tag.text)),
+        map((tags) => orderBy(tags))
       )
       .subscribe((list) => (this.tagList = list));
+  }
+
+  private checkFormEquality(): void {
+    this.isEqualToOriginalArticle = isEqual({ ...this._article, ...this.form.value }, this._article);
   }
 
   submit(): void {

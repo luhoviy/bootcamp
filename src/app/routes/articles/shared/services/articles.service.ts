@@ -15,8 +15,16 @@ export class ArticlesService {
     return this.http.get<Article[]>(this.API_URL);
   }
 
+  getOne(id: string): Observable<Article> {
+    return this.http.get<Article>(`${this.API_URL}/${id}`);
+  }
+
   create(article: BaseArticle): Observable<Article> {
     return this.http.post<Article>(this.API_URL, article);
+  }
+
+  update(article: Article): Observable<Article> {
+    return this.http.put<Article>(`${this.API_URL}/${article._id}`, article);
   }
 
   deleteOne(id: string): Observable<void> {

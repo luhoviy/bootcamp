@@ -70,9 +70,19 @@
     </mat-form-field>
   </ng-container>
 
-  <div fxLayoutAlign="end center">
+  <div fxLayoutAlign="end center" fxLayoutGap="1rem">
+    <a
+      *ngIf="isEditMode"
+      mat-raised-button
+      [routerLink]="['/articles/', _article._id]"
+      [state]="{ article: _article }"
+      class="mw-auto"
+    >
+      <span>Overview</span>
+    </a>
+
     <button
-      [disabled]="form.invalid || form.untouched"
+      [disabled]="form.invalid || (isEditMode && isEqualToOriginalArticle)"
       type="submit"
       mat-raised-button
       color="primary"

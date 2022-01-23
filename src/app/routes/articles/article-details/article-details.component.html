@@ -1,0 +1,16 @@
+<section class="h-100" fxLayout="column">
+  <div class="section-header m-0" fxLayoutAlign="center center" fxLayoutGap="1rem">
+    <h1 class="mat-display-2 m-0">{{ article.title }}</h1>
+  </div>
+
+  <mat-card fxFlex="1 auto">
+    <app-article-card-header [article]="article"></app-article-card-header>
+
+    <ng-container *ngIf="article.tags.length">
+      <app-article-tags [tags]="article.tags"></app-article-tags>
+      <div class="divider mt-1 mb-1"></div>
+    </ng-container>
+
+    <p class="mat-h2">{{ article.description }}</p>
+  </mat-card>
+</section>

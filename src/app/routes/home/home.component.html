@@ -38,89 +38,52 @@
         fxLayoutGap="1rem"
         role="list"
       >
-        <mat-card *ngFor="let article of articles" role="listitem">
-          <div class="articles-list__item">
-            <div
-              class="articles-list__item__header"
-              fxLayout="row"
-              fxLayoutAlign="space-between center"
-            >
-              <div fxLayoutAlign="start start" fxLayoutGap="1rem">
-                <div class="avatar">
-                  <mat-icon>person</mat-icon>
-                </div>
+        <mat-card
+          class="articles-list__item"
+          *ngFor="let article of articles"
+          role="listitem"
+        >
+          <app-article-card-header [article]="article"></app-article-card-header>
 
-                <div fxLayout="column">
-                  <span
-                    class="mat-h3 m-0 articles-list__item__header__author-name"
-                    ngClass.xs="mat-h4"
-                  >
-                    {{ article.author.displayName }}
-                  </span>
-
-                  <span class="mat-caption articles-list__item__header__creation-date">{{
-                    article.createdAt | humanizedTime
-                  }}</span>
-                </div>
-              </div>
-
-              <ng-template #btnContent>
-                <mat-icon ngClass.gt-xs="mr-half">favorite</mat-icon>
-                <span fxHide.xs>{{ article.likes.length }}</span>
-              </ng-template>
-
-              <ng-container *ngIf="article.currentUserLiked; else noLikeBtn">
-                <button
-                  (click)="toggleLikeStatement(article)"
-                  mat-raised-button
-                  color="primary"
-                  class="pr-half pl-half"
-                >
-                  <ng-template [ngTemplateOutlet]="btnContent"></ng-template>
-                </button>
-              </ng-container>
-
-              <ng-template #noLikeBtn>
-                <button
-                  (click)="toggleLikeStatement(article)"
-                  mat-stroked-button
-                  color="primary"
-                  class="pr-half pl-half"
-                >
-                  <ng-template [ngTemplateOutlet]="btnContent"></ng-template>
-                </button>
-              </ng-template>
-            </div>
-
+          <ng-container *ngIf="article.tags.length">
+            <app-article-tags [tags]="article.tags"></app-article-tags>
             <div class="divider mt-1 mb-1"></div>
+          </ng-container>
 
-            <ng-container *ngIf="article.tags.length">
-              <app-article-tags [tags]="article.tags"></app-article-tags>
-              <div class="divider mt-1 mb-1"></div>
-            </ng-container>
+          <h2 class="mat-display-1 m-0 articles-list__item__title">
+            {{ article.title }}
+          </h2>
 
-            <h2 class="mat-display-1 m-0 articles-list__item__title">
-              {{ article.title }}
-            </h2>
-
-            <p class="mt-1 articles-list__item__description">
-              {{ article.description }}
-            </p>
-          </div>
+          <p class="mt-1 articles-list__item__description">
+            {{ article.description }}
+          </p>
 
           <div class="divider mt-1"></div>
 
-          <div class="mt-1" fxLayoutAlign="space-between center">
-            <button mat-stroked-button>Read More</button>
-
+          <div
+            class="mt-1 articles-list__item__actions-area"
+            fxLayoutAlign="space-between center"
+            fxLayoutGap="1rem"
+          >
             <div
-              *ngIf="article.author._id === currentUser._id"
-              fxLayoutAlign="end center"
+              class="articles-list__item__actions-area__comments"
+              fxLayoutGap="0.5rem"
+              fxLayoutAlign="start center"
             >
-              <button (click)="deleteArticle(article)" mat-mini-fab color="warn">
-                <mat-icon>delete_forever</mat-icon>
-              </button>
+              <mat-icon>comment</mat-icon>
+              <span class="mat-h3 m-0">
+                {{ article.comments.length }}
+              </span>
             </div>
+
+            <a
+              mat-stroked-button
+              [routerLink]="['/articles/', article._id]"
+              [state]="{article}"
+              class="mw-auto"
+            >
+              <span>Read More</span>
+            </a>
           </div>
         </mat-card>
       </div>

@@ -1,0 +1,61 @@
+<div fxLayoutGap="1rem" fxLayout="row" fxLayoutAlign="space-between center">
+  <div fxLayoutAlign="start start" fxLayoutGap="1rem" fxFlex="1 auto">
+    <div class="avatar">
+      <mat-icon>person</mat-icon>
+    </div>
+
+    <div fxLayout="column">
+      <span class="mat-h3 m-0 author-name" ngClass.xs="mat-h4">
+        {{ article.author.displayName }}
+      </span>
+
+      <span class="mat-caption creation-date">{{
+        article.createdAt | humanizedTime
+      }}</span>
+    </div>
+  </div>
+
+  <ng-template #btnContent>
+    <mat-icon class="mr-half">favorite</mat-icon>
+    <span>{{ article.likes.length }}</span>
+  </ng-template>
+
+  <ng-container *ngIf="article.currentUserLiked; else noLikeBtn">
+    <button
+      (click)="toggleLikeStatement(article)"
+      mat-raised-button
+      color="primary"
+      class="pr-half pl-half"
+    >
+      <ng-template [ngTemplateOutlet]="btnContent"></ng-template>
+    </button>
+  </ng-container>
+
+  <ng-template #noLikeBtn>
+    <button
+      (click)="toggleLikeStatement(article)"
+      mat-stroked-button
+      color="primary"
+      class="pr-half pl-half"
+    >
+      <ng-template [ngTemplateOutlet]="btnContent"></ng-template>
+    </button>
+  </ng-template>
+
+  <button mat-icon-button [matMenuTriggerFor]="menu" class="m-0">
+    <mat-icon>more_vert</mat-icon>
+  </button>
+</div>
+
+<div class="divider mt-1 mb-1"></div>
+
+<mat-menu #menu="matMenu">
+  <a mat-menu-item [routerLink]="['/articles', article._id, 'edit']" [state]="{article}">
+    <mat-icon>edit</mat-icon>
+    <span>Edit</span>
+  </a>
+  <button mat-menu-item (click)="deleteArticle()">
+    <mat-icon>delete_forever</mat-icon>
+    <span>Delete</span>
+  </button>
+</mat-menu>

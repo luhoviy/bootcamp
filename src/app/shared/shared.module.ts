@@ -13,6 +13,9 @@ import { LoadingBarRouterModule } from "@ngx-loading-bar/router";
 import { MatDialogModule } from "@angular/material/dialog";
 import { ConfirmationDialogComponent } from "./components/confirmation-dialog/confirmation-dialog.component";
 import { StopPropagationDirective } from "./directives/stop-propagation.directive";
+import { ReactiveFormsModule } from "@angular/forms";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
 
 @NgModule({
   declarations: [ClearObservable, HumanizedTimePipe, ConfirmationDialogComponent, StopPropagationDirective],
@@ -26,7 +29,10 @@ import { StopPropagationDirective } from "./directives/stop-propagation.directiv
     MatSnackBarModule,
     HttpClientModule,
     LoadingBarRouterModule,
-    MatDialogModule
+    MatDialogModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   exports: [
     FlexLayoutModule,
@@ -40,7 +46,10 @@ import { StopPropagationDirective } from "./directives/stop-propagation.directiv
     LoadingBarRouterModule,
     MatDialogModule,
     ConfirmationDialogComponent,
-    StopPropagationDirective
+    StopPropagationDirective,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule
   ]
 })
 export class SharedModule {}

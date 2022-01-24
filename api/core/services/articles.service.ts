@@ -122,15 +122,14 @@ class ArticlesService {
     );
   }
 
-  async addComment(articleID: string, commentID: string): Promise<ArticleDTO> {
-    return ArticleModel.findByIdAndUpdate(
-      articleID,
+  async addComment(articleID: string, commentID: string): Promise<void> {
+    await ArticleModel.updateOne(
+      { _id: articleID },
       {
         $addToSet: {
           comments: commentID
         }
-      },
-      { new: true, populate: ArticlesService.buildArticlePopulateOptions() }
+      }
     );
   }
 }

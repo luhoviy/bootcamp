@@ -9,12 +9,12 @@ import {
 export const CommentsRouter = express.Router();
 
 CommentsRouter.post(
-  "/add",
+  "/",
   [RequestBodyValidator.notEmpty("text"), RequestBodyValidator.notEmpty("articleID"), validateRequestBody],
   controller.add
 );
 CommentsRouter.put(
-  "/update",
+  "/",
   [RequestBodyValidator.notEmpty("text"), RequestBodyValidator.notEmpty("_id"), validateRequestBody],
   controller.update
 );

@@ -15,6 +15,7 @@ import { take } from "rxjs";
 })
 export class ArticleCardHeaderComponent implements OnInit {
   @Input() article: Article;
+  @Input() redirectAfterDeletion = false;
   currentUser: User;
   isCurrentUserAuthor: boolean;
 
@@ -45,6 +46,6 @@ export class ArticleCardHeaderComponent implements OnInit {
   }
 
   deleteArticle(): void {
-    this.store.dispatch(deleteArticle({ id: this.article._id }));
+    this.store.dispatch(deleteArticle({ id: this.article._id, redirect: this.redirectAfterDeletion }));
   }
 }

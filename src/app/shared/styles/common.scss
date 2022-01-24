@@ -69,6 +69,10 @@
     width: 100%;
     background-color: $grey-light;
     border-radius: 1px;
+
+    &.dark {
+      background-color: #d5d5d5;
+    }
   }
 
   .section-header {

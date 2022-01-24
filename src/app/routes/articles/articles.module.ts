@@ -6,9 +6,10 @@ import { SharedModule } from "../../shared/shared.module";
 import { ArticleDetailsComponent } from "./article-details/article-details.component";
 import { EditArticleComponent } from "./edit-article/edit-article.component";
 import { ArticleSharedModule } from "./shared/components/article-shared.module";
+import { ArticleCommentsModule } from "./shared/components/article-comments/article-comments.module";
 
 @NgModule({
   declarations: [CreateArticleComponent, ArticleDetailsComponent, EditArticleComponent],
-  imports: [CommonModule, ArticlesRoutingModule, SharedModule, ArticleSharedModule]
+  imports: [CommonModule, ArticlesRoutingModule, SharedModule, ArticleSharedModule, ArticleCommentsModule]
 })
 export class ArticlesModule {}

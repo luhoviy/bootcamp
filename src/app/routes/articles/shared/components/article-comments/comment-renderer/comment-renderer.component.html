@@ -1,0 +1,40 @@
+<mat-form-field class="w-100" appearance="legacy" floatLabel="never">
+  <textarea
+    matInput
+    [cdkTextareaAutosize]="true"
+    autocomplete="off"
+    (focus)="setActionsVisibility()"
+    [formControl]="commentCtrl"
+    placeholder="Add a comment..."
+    maxlength="2000"
+    #input
+  >
+  </textarea>
+
+  <mat-hint *ngIf="showCommentActions" align="end"
+    >{{ input.value?.length || 0 }} / 2000
+  </mat-hint>
+</mat-form-field>
+
+<div
+  class="mt-half"
+  fxLayoutAlign="space-between center"
+  fxLayoutGap="1rem"
+  *ngIf="showCommentActions"
+>
+  <mat-spinner *ngIf="isLoading" [diameter]="20"></mat-spinner>
+
+  <div fxFlex="1 auto" fxLayoutAlign="end center" fxLayoutGap="1rem">
+    <button type="button" mat-stroked-button (click)="cancel()">Cancel</button>
+
+    <button
+      [disabled]="!commentCtrl.value.toString().trim() || isLoading"
+      type="button"
+      mat-raised-button
+      color="primary"
+      (click)="saveComment()"
+    >
+      {{ !!comment ? "Save" : "Comment" }}
+    </button>
+  </div>
+</div>

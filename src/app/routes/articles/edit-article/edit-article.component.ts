@@ -2,8 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from "@angular/
 import { Article } from "../../../shared/models/article.model";
 import { ActivatedRoute } from "@angular/router";
 import { Store } from "@ngrx/store";
-import { catchError, finalize, take, takeUntil, throwError, withLatestFrom } from "rxjs";
-import { getCurrentUser } from "../../../authentication/store";
+import { catchError, finalize, take, takeUntil, throwError } from "rxjs";
 import { ArticlesService } from "../shared/services/articles.service";
 import { updateLoadingState } from "../../../store";
 import { ClearObservable } from "../../../shared/components/clear-observable";
@@ -18,7 +17,6 @@ import { Toast } from "../../../shared/models/toaster.model";
 })
 export class EditArticleComponent extends ClearObservable {
   article: Article;
-  isAuthor: boolean;
 
   constructor(
     private activateRoute: ActivatedRoute,
@@ -28,12 +26,9 @@ export class EditArticleComponent extends ClearObservable {
     private cd: ChangeDetectorRef
   ) {
     super();
-    activateRoute.data
-      .pipe(withLatestFrom(store.select(getCurrentUser)), take(1))
-      .subscribe(([{ article }, user]) => {
-        this.article = article;
-        this.isAuthor = this.article.author._id === user._id;
-      });
+    activateRoute.data.pipe(take(1)).subscribe(({ article }) => {
+      this.article = article;
+    });
   }
 
   editArticle(article: Article): void {

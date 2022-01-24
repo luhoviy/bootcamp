@@ -42,7 +42,12 @@
     </button>
   </ng-template>
 
-  <button mat-icon-button [matMenuTriggerFor]="menu" class="m-0">
+  <button
+    *ngIf="article.author._id === currentUser._id"
+    mat-icon-button
+    [matMenuTriggerFor]="menu"
+    class="m-0"
+  >
     <mat-icon>more_vert</mat-icon>
   </button>
 </div>

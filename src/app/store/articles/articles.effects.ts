@@ -12,12 +12,14 @@ import { HttpErrorResponse } from "@angular/common/http";
 import { ConfirmationDialogService } from "../../shared/components/confirmation-dialog/confirmation-dialog.service";
 import { ConfirmDialogData } from "../../shared/components/confirmation-dialog/confirmation-dialog.model";
 import { getCurrentUser } from "../../authentication/store";
+import { Router } from "@angular/router";
 
 @Injectable()
 export class ArticlesEffects {
   constructor(
     private actions$: Actions,
     private store: Store,
+    private router: Router,
     private toaster: ToasterService,
     private articleService: ArticlesService,
     private confirmDialog: ConfirmationDialogService
@@ -47,7 +49,7 @@ export class ArticlesEffects {
   deleteArticle$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ArticleActions.deleteArticle),
-      switchMap(({ id }) => {
+      switchMap(({ id, redirect }) => {
         const dialogData = new ConfirmDialogData();
         dialogData.title = "Are you sure you want to delete this article?";
         dialogData.confirmButtonColor = "warn";
@@ -59,7 +61,12 @@ export class ArticlesEffects {
           switchMap(() => {
             return this.articleService.deleteOne(id).pipe(
               take(1),
-              map(() => ArticleActions.deleteArticleSuccess({ id })),
+              map(() => {
+                if (redirect) {
+                  this.router.navigateByUrl("/home");
+                }
+                return ArticleActions.deleteArticleSuccess({ id });
+              }),
               catchError((error: HttpErrorResponse) => {
                 this.toaster.present(Toast.buildHttpErrorToast(error));
                 return of(ArticleActions.deleteArticleFailure({ error }));

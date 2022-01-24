@@ -32,7 +32,7 @@ export const DELETE_ARTICLE = "DELETE_ARTICLE";
 export const DELETE_ARTICLE_SUCCESS = "DELETE_ARTICLE_SUCCESS";
 export const DELETE_ARTICLE_FAILURE = "DELETE_ARTICLE_FAILURE";
 
-export const deleteArticle = createAction(DELETE_ARTICLE, props<{ id: string }>());
+export const deleteArticle = createAction(DELETE_ARTICLE, props<{ id: string; redirect: boolean }>());
 export const deleteArticleSuccess = createAction(DELETE_ARTICLE_SUCCESS, props<{ id: string }>());
 export const deleteArticleFailure = createAction(
   DELETE_ARTICLE_FAILURE,

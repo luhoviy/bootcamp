@@ -28,7 +28,7 @@ export class Article extends BaseArticle {
     this._id = article._id;
     this.createdAt = article.createdAt;
     this.likes = article.likes;
-    this.comments = article.comments;
+    this.comments = article.comments.map((comment) => new Comment(comment));
     this.tags = article.tags;
     this.author = article.author;
   }

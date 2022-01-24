@@ -14,7 +14,6 @@ import { User } from "../../../shared/models/user.model";
 })
 export class ArticleDetailsComponent {
   article: Article;
-  isAuthor: boolean;
   currentUser: User;
 
   constructor(activateRoute: ActivatedRoute, private store: Store) {
@@ -23,7 +22,6 @@ export class ArticleDetailsComponent {
       .subscribe(([{ article }, user]) => {
         this.article = article;
         this.currentUser = user;
-        this.isAuthor = this.article.author._id === user._id;
       });
   }
 }

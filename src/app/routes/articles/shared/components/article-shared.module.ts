@@ -10,6 +10,7 @@ import { MatInputModule } from "@angular/material/input";
 import { ReactiveFormsModule } from "@angular/forms";
 import { MatChipsModule } from "@angular/material/chips";
 import { MatMenuModule } from "@angular/material/menu";
+import { ArticleCommentsModule } from "./article-comments/article-comments.module";
 
 @NgModule({
   declarations: [ArticleFormComponent, ArticleTagsComponent, ArticleCardHeaderComponent],
@@ -21,7 +22,8 @@ import { MatMenuModule } from "@angular/material/menu";
     MatInputModule,
     ReactiveFormsModule,
     MatChipsModule,
-    MatMenuModule
+    MatMenuModule,
+    ArticleCommentsModule
   ],
   exports: [ArticleFormComponent, ArticleTagsComponent, ArticleCardHeaderComponent]
 })

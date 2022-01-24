@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpParams } from "@angular/common/http";
-import { Observable } from "rxjs";
+import { map, Observable } from "rxjs";
 import { Article, BaseArticle } from "../../../../shared/models/article.model";
 
 @Injectable({
@@ -12,11 +12,13 @@ export class ArticlesService {
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<Article[]> {
-    return this.http.get<Article[]>(this.API_URL);
+    return this.http
+      .get<Article[]>(this.API_URL)
+      .pipe(map((list) => list.map((article) => new Article(article))));
   }
 
   getOne(id: string): Observable<Article> {
-    return this.http.get<Article>(`${this.API_URL}/${id}`);
+    return this.http.get<Article>(`${this.API_URL}/${id}`).pipe(map((article) => new Article(article)));
   }
 
   create(article: BaseArticle): Observable<Article> {

@@ -40,8 +40,8 @@ class ArticlesService {
     const sortOptions = QueryParamsParser.parseSortParam(queryParams) || defaultSortOptions;
     query = DatabaseQueryBuilder.buildSortQuery(query, sortOptions);
     query = DatabaseQueryBuilder.setQueryIntersection(query, QueryParamsParser.parse(queryParams, "tags"));
-    query = DatabaseQueryBuilder.setQueryPagination(query, QueryParamsParser.parse(queryParams, "skip"));
-    query = DatabaseQueryBuilder.setQueryPagination(query, QueryParamsParser.parse(queryParams, "limit"));
+    // query = DatabaseQueryBuilder.setQueryPagination(query, QueryParamsParser.parse(queryParams, "skip"));
+    // query = DatabaseQueryBuilder.setQueryPagination(query, QueryParamsParser.parse(queryParams, "limit"));
 
     return ArticlesService.populateArticleQuery(query);
   }

@@ -1,0 +1,24 @@
+@import "variables";
+
+:host {
+  display: block;
+}
+
+.dark-bg {
+  background-color: $grey-light;
+}
+
+.author-name {
+  color: $primary-dark;
+  line-height: 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.creation-date {
+  color: $grey-dark;
+}
+
+.comment-text {
+  word-break: break-word;
+}

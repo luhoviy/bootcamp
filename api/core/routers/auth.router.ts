@@ -4,11 +4,7 @@ import { RequestBodyValidator, validateRequestBody } from "../middlewares/valida
 
 export const AuthRouter = express.Router();
 
-AuthRouter.post(
-  "/signup",
-  [...RequestBodyValidator.buildSignUpValidators(), validateRequestBody],
-  controller.signup
-);
+AuthRouter.post("/signup", RequestBodyValidator.buildSignUpValidators(), controller.signup);
 AuthRouter.post(
   "/login",
   [...RequestBodyValidator.buildCredentialsValidators(), validateRequestBody],

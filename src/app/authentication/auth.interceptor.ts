@@ -12,7 +12,7 @@ import { getAccessToken, getIsLoggedIn, logout, refreshTokenSuccess } from "./st
 import { AuthService } from "./services/auth.service";
 import { Router } from "@angular/router";
 import { ToasterService } from "../shared/services/toaster.service";
-import { Toast, ToastType } from "../shared/services/toaster.model";
+import { Toast, ToastType } from "../shared/models/toaster.model";
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {

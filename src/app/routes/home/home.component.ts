@@ -1,13 +1,17 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
 import { Store } from "@ngrx/store";
-import { deleteArticle, getArticlesList, toggleArticleLike } from "../../store";
-import { map, takeUntil, withLatestFrom } from "rxjs";
-import { Article } from "../articles/shared/models/article.model";
+import { getArticlesList, getSearchConfig, updateArticlesList, updateSearchConfig } from "../../store";
+import { debounceTime, distinctUntilChanged, map, skip, switchMap, takeUntil, withLatestFrom } from "rxjs";
+import { Article } from "../../shared/models/article.model";
 import { ClearObservable } from "../../shared/components/clear-observable";
-import { cloneDeep, orderBy } from "lodash";
+import { cloneDeep } from "lodash";
 import { getCurrentUser } from "../../authentication/store";
-import { User } from "../../authentication/models/user.model";
+import { User } from "../../shared/models/user.model";
 import { BreakpointObserver } from "@angular/cdk/layout";
+import { SearchConfig } from "../../shared/models/search-config.model";
+import { ArticlesService } from "../articles/shared/services/articles.service";
+import { tap } from "rxjs/operators";
+import { FormControl } from "@angular/forms";
 
 @Component({
   selector: "app-home",
@@ -15,14 +19,17 @@ import { BreakpointObserver } from "@angular/cdk/layout";
   styleUrls: ["./home.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HomeComponent extends ClearObservable implements OnInit {
+export class HomeComponent extends ClearObservable implements OnInit, OnDestroy {
   articles: Article[] = [];
   currentUser: User;
   isDesktop: boolean;
+  searchConfig: SearchConfig;
+  searchControl: FormControl;
 
   constructor(
     private store: Store,
     private breakpointObserver: BreakpointObserver,
+    private articleService: ArticlesService,
     private cdr: ChangeDetectorRef
   ) {
     super();
@@ -30,6 +37,7 @@ export class HomeComponent extends ClearObservable implements OnInit {
 
   ngOnInit(): void {
     this.initSubscriptions();
+    this.initSearchControl();
     this.getArticles();
   }
 
@@ -44,6 +52,22 @@ export class HomeComponent extends ClearObservable implements OnInit {
         this.isDesktop = isDesktop;
         this.cdr.markForCheck();
       });
+
+    this.observeSearchConfigAndUpdateList();
+  }
+
+  private observeSearchConfigAndUpdateList(): void {
+    this.store
+      .select(getSearchConfig)
+      .pipe(
+        tap((config) => (this.searchConfig = config)),
+        skip(1),
+        switchMap(() => this.articleService.getAll()),
+        takeUntil(this.destroy$)
+      )
+      .subscribe((list) => {
+        this.store.dispatch(updateArticlesList({ list }));
+      });
   }
 
   private getArticles(): void {
@@ -52,9 +76,8 @@ export class HomeComponent extends ClearObservable implements OnInit {
       .pipe(
         withLatestFrom(this.store.select(getCurrentUser)),
         map(([list, user]) => {
-          list = orderBy(cloneDeep(list), "createdAt", "desc");
           this.currentUser = user;
-          return list.map((article) => {
+          return cloneDeep(list).map((article) => {
             article.currentUserLiked = article.likes.includes(user._id);
             return article;
           });
@@ -67,15 +90,21 @@ export class HomeComponent extends ClearObservable implements OnInit {
       });
   }
 
-  toggleLikeStatement(article: Article): void {
-    const liked = (article.currentUserLiked = !article.currentUserLiked);
-    liked
-      ? article.likes.push(this.currentUser._id)
-      : (article.likes = article.likes.filter((id) => id !== this.currentUser._id));
-    this.store.dispatch(toggleArticleLike({ article: cloneDeep(article) }));
+  private initSearchControl(): void {
+    this.searchControl = new FormControl(this.searchConfig ? this.searchConfig.searchKeyword : "");
+    this.searchControl.valueChanges
+      .pipe(debounceTime(700), distinctUntilChanged(), takeUntil(this.destroy$))
+      .subscribe((searchKeyword) => {
+        this.store.dispatch(updateSearchConfig({ config: { ...this.searchConfig, searchKeyword } }));
+      });
   }
 
-  deleteArticle(article: Article): void {
-    this.store.dispatch(deleteArticle({ id: article._id }));
+  clearSearchControl(): void {
+    this.searchControl.setValue("");
+  }
+
+  override ngOnDestroy() {
+    super.ngOnDestroy();
+    this.store.dispatch(updateSearchConfig({ config: { ...this.searchConfig, skip: 0 } }));
   }
 }

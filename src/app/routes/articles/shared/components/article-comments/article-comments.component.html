@@ -1,0 +1,67 @@
+<mat-card [ngClass]="{ 'dark-bg': darkTheme }">
+  <h2>{{ comments.length }} Comments</h2>
+
+  <app-comment-renderer
+    (onSave)="addComment($event)"
+    [articleId]="_article._id"
+  ></app-comment-renderer>
+
+  <div fxLayout="column" fxLayoutGap="1rem" class="mt-1">
+    <div *ngFor="let comment of comments; last as isLast">
+      <div fxLayoutGap="1rem">
+        <div class="avatar small">
+          <mat-icon>person</mat-icon>
+        </div>
+
+        <app-comment-renderer
+          *ngIf="comment.editMode; else commentTemplate"
+          (onSave)="updateComment($event)"
+          (onCancel)="comment.editMode = false"
+          [articleId]="_article._id"
+          [comment]="comment"
+        ></app-comment-renderer>
+
+        <ng-template #commentTemplate>
+          <div fxFlex="1 auto">
+            <div fxLayoutAlign="start center" fxLayoutGap="1rem">
+              <div fxFlex="1 auto" fxLayoutGap="5px">
+                <span class="mat-h3 m-0 author-name" ngClass.xs="mat-h4">
+                  {{ comment.author.displayName }}
+                </span>
+
+                <span class="mat-caption creation-date">
+                  {{ comment.createdAt | humanizedTime }}
+                  <span *ngIf="comment.isEdited">(edited)</span>
+                </span>
+              </div>
+
+              <button
+                *ngIf="comment.author._id === currentUser._id"
+                mat-icon-button
+                [matMenuTriggerFor]="menu"
+                class="m-0"
+              >
+                <mat-icon>more_vert</mat-icon>
+              </button>
+            </div>
+
+            <p class="mt-half comment-text">{{ comment.text }}</p>
+          </div>
+        </ng-template>
+      </div>
+
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="comment.editMode = true">
+          <mat-icon>edit</mat-icon>
+          <span>Edit</span>
+        </button>
+        <button mat-menu-item (click)="deleteComment(comment._id)">
+          <mat-icon>delete_forever</mat-icon>
+          <span>Delete</span>
+        </button>
+      </mat-menu>
+
+      <div class="divider mt-1" [ngClass]="{ dark: darkTheme }" *ngIf="!isLast"></div>
+    </div>
+  </div>
+</mat-card>

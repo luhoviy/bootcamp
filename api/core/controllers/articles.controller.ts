@@ -34,10 +34,22 @@ class ArticlesController {
     }
   }
 
-  async deleteOne(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+  async update(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+    const user: UserJwtPayload = req["user"];
     const { id } = req.params;
     try {
-      await articlesService.deleteOne(id);
+      const article = await articlesService.update(id, req.body, user);
+      res.json(article);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async deleteOne(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+    const user: UserJwtPayload = req["user"];
+    const { id } = req.params;
+    try {
+      await articlesService.deleteOne(id, user);
       res.sendStatus(StatusCode.NO_CONTENT);
     } catch (error) {
       next(error);
@@ -65,30 +77,6 @@ class ArticlesController {
       const user: UserJwtPayload = req["user"];
       const response = await articlesService.dislikeArticle(articleID as string, user);
       res.json(response);
-    } catch (error) {
-      next(error);
-    }
-  }
-
-  async addTag(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
-    try {
-      const user: UserJwtPayload = req["user"];
-      const { id } = req.params;
-      const { tag } = req.query;
-      const response = await articlesService.addTag(id, tag as string, user);
-      res.json(response);
-    } catch (error) {
-      next(error);
-    }
-  }
-
-  async removeTag(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
-    try {
-      const user: UserJwtPayload = req["user"];
-      const { id } = req.params;
-      const { tag } = req.query;
-      await articlesService.removeTag(id, tag as string, user);
-      res.sendStatus(StatusCode.NO_CONTENT);
     } catch (error) {
       next(error);
     }

@@ -8,10 +8,10 @@ import { catchError, of, switchMap, take } from "rxjs";
 import { AuthService } from "../services/auth.service";
 import { finalize, map, tap } from "rxjs/operators";
 import { updateLoadingState } from "../../store";
-import { Toast } from "../../shared/services/toaster.model";
+import { Toast } from "../../shared/models/toaster.model";
 import { Router } from "@angular/router";
 import { isEmpty } from "lodash";
-import { AuthResponse } from "../models/auth.model";
+import { AuthResponse } from "../../shared/models/auth.model";
 
 @Injectable()
 export class AuthEffects {
@@ -94,7 +94,7 @@ export class AuthEffects {
         ofType(AuthActions.extractAuthData),
         tap(() => {
           try {
-            let stringData = localStorage.getItem("auth");
+            const stringData = localStorage.getItem("auth");
             if (!isEmpty(stringData)) {
               const authData: AuthResponse = JSON.parse(stringData);
               this.store.dispatch(loginSuccess({ authResponse: authData }));

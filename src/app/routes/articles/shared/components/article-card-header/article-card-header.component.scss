@@ -1,0 +1,15 @@
+@import "src/app/shared/styles/variables";
+
+.author-name {
+  color: $primary-dark;
+  line-height: 1.5rem;
+  font-weight: 600;
+}
+
+.creation-date {
+  color: $grey-dark;
+}
+
+.comments-icon {
+  color: $primary-dark;
+}

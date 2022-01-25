@@ -6,7 +6,7 @@ import { ArticlesService } from "../../articles/shared/services/articles.service
 import * as ArticleActions from "../../../store/articles/articles.actions";
 import { HttpErrorResponse } from "@angular/common/http";
 import { ToasterService } from "../../../shared/services/toaster.service";
-import { Toast, ToastType } from "../../../shared/services/toaster.model";
+import { Toast, ToastType } from "../../../shared/models/toaster.model";
 
 @Injectable()
 export class HomeResolver implements Resolve<boolean> {

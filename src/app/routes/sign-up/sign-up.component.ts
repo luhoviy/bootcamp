@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { Store } from "@ngrx/store";
-import { SignUpInfo } from "../../authentication/models/auth.model";
+import { SignUpInfo } from "../../shared/models/auth.model";
 import { signUp } from "../../authentication/store";
 
 @Component({

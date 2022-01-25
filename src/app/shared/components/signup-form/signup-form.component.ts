@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { matchPasswordsValidator } from "../../utils";
-import { User } from "../../../authentication/models/user.model";
-import { SignUpInfo } from "../../../authentication/models/auth.model";
+import { User } from "../../models/user.model";
+import { SignUpInfo } from "../../models/auth.model";
 
 @Component({
   selector: "app-signup-form",

@@ -5,6 +5,8 @@ import { RouterModule } from "@angular/router";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { SharedModule } from "../../shared/shared.module";
 import { HomeResolver } from "./resolvers/home.resolver";
+import { TagsResolver } from "../articles/shared/resolvers/tags.resolver";
+import { ArticleSharedModule } from "../articles/shared/components/article-shared.module";
 
 @NgModule({
   declarations: [HomeComponent],
@@ -15,12 +17,14 @@ import { HomeResolver } from "./resolvers/home.resolver";
         path: "",
         component: HomeComponent,
         resolve: {
-          home: HomeResolver
+          home: HomeResolver,
+          tags: TagsResolver
         }
       }
     ]),
     MatSidenavModule,
-    SharedModule
+    SharedModule,
+    ArticleSharedModule
   ],
   providers: [HomeResolver]
 })

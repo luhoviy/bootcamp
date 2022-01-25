@@ -1,6 +1,13 @@
 @import "variables";
 
 .section-header {
+  &__search-area {
+    max-width: 350px;
+    border-radius: 5px;
+    background-color: $grey-light;
+    color: $grey-dark;
+  }
+
   &__aside-toggle-btn {
     color: $white;
 
@@ -29,18 +36,6 @@
 
 .articles-list {
   &__item {
-    &__header {
-      &__author-name {
-        color: $primary-dark;
-        line-height: 1.5rem;
-        font-weight: 600;
-      }
-
-      &__creation-date {
-        color: $grey-dark;
-      }
-    }
-
     &__description,
     &__title {
       display: -webkit-box;
@@ -52,6 +47,12 @@
 
     &__title {
       -webkit-line-clamp: 2;
+    }
+
+    &__actions-area {
+      &__comments {
+        color: $primary-dark;
+      }
     }
   }
 }

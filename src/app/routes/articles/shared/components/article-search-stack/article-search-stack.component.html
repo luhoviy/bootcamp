@@ -1,0 +1,46 @@
+<div fxLayout="column" fxLayoutAlign="space-between" class="h-100">
+  <div>
+    <h2 fxLayoutAlign="start center" fxLayoutGap="0.5rem">
+      <mat-icon>sort</mat-icon>
+      <span>Search settings</span>
+    </h2>
+    <div class="divider mt-1"></div>
+
+    <form [formGroup]="configForm">
+      <mat-form-field class="w-100 mt-1" appearance="legacy">
+        <mat-label>Show</mat-label>
+        <mat-select formControlName="tags" multiple>
+          <mat-option *ngFor="let tag of availableTags" [value]="tag">{{
+            tag
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="w-100 mt-half" appearance="outline">
+        <mat-label>Sort By</mat-label>
+        <mat-select formControlName="sortBy">
+          <mat-option [value]="sortEnum.TIME">Publication time</mat-option>
+          <mat-option [value]="sortEnum.LIKES">Number of likes</mat-option>
+          <mat-option [value]="sortEnum.COMMENTS">Number of comments</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="w-100" appearance="outline">
+        <mat-label>Order By</mat-label>
+        <mat-select formControlName="order">
+          <mat-option [value]="sortOrder.DESC">Descending</mat-option>
+          <mat-option [value]="sortOrder.ASC">Ascending</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </form>
+  </div>
+
+  <button
+    (click)="resetConfig()"
+    *ngIf="canResetConfig"
+    mat-raised-button
+    color="primary"
+  >
+    Reset
+  </button>
+</div>

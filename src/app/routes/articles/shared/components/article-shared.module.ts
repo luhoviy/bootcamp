@@ -8,9 +8,15 @@ import { MatSelectModule } from "@angular/material/select";
 import { MatChipsModule } from "@angular/material/chips";
 import { MatMenuModule } from "@angular/material/menu";
 import { ArticleCommentsModule } from "./article-comments/article-comments.module";
+import { ArticleSearchStackComponent } from "./article-search-stack/article-search-stack.component";
 
 @NgModule({
-  declarations: [ArticleFormComponent, ArticleTagsComponent, ArticleCardHeaderComponent],
+  declarations: [
+    ArticleFormComponent,
+    ArticleTagsComponent,
+    ArticleCardHeaderComponent,
+    ArticleSearchStackComponent
+  ],
   imports: [
     CommonModule,
     SharedModule,
@@ -19,6 +25,11 @@ import { ArticleCommentsModule } from "./article-comments/article-comments.modul
     MatMenuModule,
     ArticleCommentsModule
   ],
-  exports: [ArticleFormComponent, ArticleTagsComponent, ArticleCardHeaderComponent]
+  exports: [
+    ArticleFormComponent,
+    ArticleTagsComponent,
+    ArticleCardHeaderComponent,
+    ArticleSearchStackComponent
+  ]
 })
 export class ArticleSharedModule {}

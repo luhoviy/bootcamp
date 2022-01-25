@@ -1,7 +1,9 @@
 import { FormGroup } from "@angular/forms";
 import { ThemePalette } from "@angular/material/core";
-import { sample } from "lodash";
+import { isEmpty, sample } from "lodash";
 import { ThemeColors } from "./consts";
+import { SearchConfig } from "./models/search-config.model";
+import { HttpParams } from "@angular/common/http";
 
 export const matchPasswordsValidator = (
   newPasswordControlName: string,
@@ -21,4 +23,18 @@ export const matchPasswordsValidator = (
 
 export const getRandomThemeColor = (): ThemePalette => {
   return sample(ThemeColors);
+};
+
+export const buildArticlesSearchHttpParams = (config: SearchConfig): HttpParams => {
+  let params = new HttpParams()
+    .set("sort", [config.sortBy, config.order].join(","))
+    .set("skip", config.skip)
+    .set("limit", config.limit);
+  if (!isEmpty(config.tags)) {
+    params = params.set("tags", config.tags.join(","));
+  }
+  if (!isEmpty(config.searchKeyword)) {
+    params = params.set("search", config.searchKeyword);
+  }
+  return params;
 };

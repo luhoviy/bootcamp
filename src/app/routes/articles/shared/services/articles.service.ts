@@ -1,7 +1,10 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpParams } from "@angular/common/http";
-import { map, Observable } from "rxjs";
+import { map, Observable, switchMap } from "rxjs";
 import { Article, BaseArticle } from "../../../../shared/models/article.model";
+import { Store } from "@ngrx/store";
+import { getSearchConfig } from "../../../../store";
+import { buildArticlesSearchHttpParams } from "../../../../shared/utils";
 
 @Injectable({
   providedIn: "root"
@@ -9,12 +12,16 @@ import { Article, BaseArticle } from "../../../../shared/models/article.model";
 export class ArticlesService {
   private readonly API_URL = "api/articles";
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private store: Store) {}
 
   getAll(): Observable<Article[]> {
-    return this.http
-      .get<Article[]>(this.API_URL)
-      .pipe(map((list) => list.map((article) => new Article(article))));
+    return this.store.select(getSearchConfig).pipe(
+      switchMap((config) => {
+        const params = buildArticlesSearchHttpParams(config);
+        return this.http.get<Article[]>(this.API_URL, { params });
+      }),
+      map((list) => list.map((article) => new Article(article)))
+    );
   }
 
   getOne(id: string): Observable<Article> {

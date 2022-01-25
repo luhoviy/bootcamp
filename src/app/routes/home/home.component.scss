@@ -1,6 +1,13 @@
 @import "variables";
 
 .section-header {
+  &__search-area {
+    max-width: 350px;
+    border-radius: 5px;
+    background-color: $grey-light;
+    color: $grey-dark;
+  }
+
   &__aside-toggle-btn {
     color: $white;
 

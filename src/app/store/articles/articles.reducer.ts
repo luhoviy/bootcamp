@@ -47,6 +47,12 @@ const reducer = createReducer(
       tags: []
     };
   }),
+  on(ArticlesActions.updateSearchConfig, (state, { config }) => {
+    return {
+      ...state,
+      searchConfig: config
+    };
+  }),
   on(
     ArticlesActions.getArticlesFailure,
     ArticlesActions.createArticleFailure,
